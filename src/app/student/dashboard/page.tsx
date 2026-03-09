@@ -39,38 +39,46 @@ function DashboardContent() {
             <main>
                 {phase === 1 && (
                     <Card className="text-center">
-                        <h3>Bước 1: KWL (K & W)</h3>
+                        <h3>0’–2’ KWL giấy: K + W</h3>
                         <p style={{ color: 'var(--text-secondary)', marginTop: '12px', lineHeight: '1.6' }}>
                             Chủ đề: <strong style={{ color: 'white', fontSize: '1.1rem' }}>{classState?.topic_prompt}</strong><br /><br />
-                            Vui lòng ghi vào phiếu giấy 2 cột đầu tiên:<br />
-                            - <strong>K (Know)</strong>: Em đã biết gì về chủ đề này?<br />
-                            - <strong>W (Want)</strong>: Em muốn học thêm điều gì?<br /><br />
-                            👉 Hãy nhìn lên TV và chuẩn bị bút + phiếu giấy.
+                            Vui lòng ghi vào phiếu giấy:<br />
+                            - <strong>K</strong>: Em đã biết gì về "khác biệt khi làm nhóm"?<br />
+                            - <strong>W</strong>: Em muốn đạt điều gì khi thảo luận hôm nay?<br /><br />
+                            👉 Lưu ý: Viết rất ngắn, 1 gạch đầu dòng mỗi ô.
                         </p>
                     </Card>
                 )}
 
                 {phase === 2 && (
-                    <Card className="text-center">
-                        <h3>Bước 2: Khởi động Poll</h3>
-                        <p style={{ color: 'var(--text-secondary)', marginTop: '12px' }}>
-                            Bình chọn món ăn yêu thích của bạn (Tính năng đang phát triển).
-                        </p>
+                    <Card className="text-center flex-column gap-md">
+                        <h3>2’–7’ Khởi động SEE: Poll</h3>
+                        <p style={{ color: 'var(--text-secondary)' }}>Món ăn yêu thích của bạn là gì?</p>
+                        <div className="flex-center gap-sm">
+                            <button className="btn-secondary" style={{ padding: '8px 16px', borderRadius: '8px' }}>A. Phở</button>
+                            <button className="btn-secondary" style={{ padding: '8px 16px', borderRadius: '8px' }}>B. Bún Bò</button>
+                            <button className="btn-secondary" style={{ padding: '8px 16px', borderRadius: '8px' }}>C. Hủ Tiếu</button>
+                        </div>
+                        <textarea placeholder="Nhập 1 câu lý do (ẩn danh)..." className="input-field" style={{ width: '100%', marginTop: '12px', minHeight: '60px' }} />
+                        <button className="btn-primary" style={{ padding: '8px 16px', borderRadius: '8px', width: '100%' }}>Gửi bình chọn</button>
                     </Card>
                 )}
 
                 {phase === 3 && (
-                    <Card className="text-center">
-                        <h3>Bước 3: Trò chơi Synergy (Yes, And)</h3>
-                        <p style={{ color: 'var(--text-secondary)', marginTop: '12px' }}>
-                            Cùng nhóm tạo chuỗi 4 câu. Nhập ý kiến của bạn khi được yêu cầu.
-                        </p>
+                    <Card className="text-center flex-column gap-md">
+                        <h3>7’–9’ Trò chơi Synergy (2 phút)</h3>
+                        <div style={{ background: 'rgba(255,255,255,0.05)', padding: '16px', borderRadius: '8px', textAlign: 'left' }}>
+                            <p style={{ color: 'var(--warning)', fontWeight: 'bold', marginBottom: '8px' }}>⚠️ Không nhập web. Chỉ nói theo mẫu.</p>
+                            <p style={{ lineHeight: '1.5' }}>Mỗi nhà chọn nhanh 2 bạn đứng tại chỗ:</p>
+                            <p style={{ lineHeight: '1.5' }}>- Bạn 1: <strong>"Mình hiểu ý bạn, và mình đề nghị..."</strong></p>
+                            <p style={{ lineHeight: '1.5' }}>- Bạn 2: <strong>"Mình lo rằng..., và mình đề nghị..."</strong></p>
+                        </div>
                     </Card>
                 )}
 
                 {phase === 4 && (
                     <Card>
-                        <h3 className="text-center" style={{ marginBottom: '24px' }}>Bước 4: Làm nhóm (Cùng tạo cách mới)</h3>
+                        <h3 className="text-center" style={{ marginBottom: '24px' }}>9’–21’ Làm nhóm DO (Tạo Ý 3)</h3>
                         <div className="flex-center gap-md text-center flex-column" style={{ marginBottom: '24px' }}>
                             <p>Chủ đề: <strong className="text-gradient-alt" style={{ fontSize: '1.2rem' }}>{classState?.topic_prompt}</strong></p>
                         </div>
@@ -83,20 +91,26 @@ function DashboardContent() {
 
                 {phase === 5 && (
                     <Card className="text-center">
-                        <h3>Bước 5: Thuyết trình</h3>
-                        <p style={{ color: 'var(--text-secondary)', marginTop: '12px' }}>
-                            Hãy chú ý lên màn hình TV và chuẩn bị lên bảng thuyết trình (1+1=3) khi tới lượt Nhà của bạn!
+                        <h3>21’–35’ Thuyết trình GET</h3>
+                        <p style={{ color: 'var(--text-secondary)', marginTop: '12px', lineHeight: '1.6', textAlign: 'left', display: 'inline-block' }}>
+                            <strong>Đội hình nhà {house} (Chỉ ~3 phút):</strong><br />
+                            - A (2 bạn): Ý 1 (10-15s)<br />
+                            - B (2 bạn): Ý 2 (10-15s)<br />
+                            - C (1-2 bạn): Ý 3 (20-30s)<br />
+                            - D (1 bạn): Vì sao 1+1=3 (10-15s)<br /><br />
+                            🎙️ Cả nhóm chốt: <em>"Nhà {house} cam kết ..."</em>
                         </p>
                     </Card>
                 )}
 
                 {phase === 6 && (
                     <Card className="text-center">
-                        <h3>Bước 6: KWL (L) & Cam kết</h3>
+                        <h3>35’–40’ KWL giấy: L + cam kết</h3>
                         <p style={{ color: 'var(--text-secondary)', marginTop: '12px', lineHeight: '1.6' }}>
                             Vui lòng ghi vào phần cuối của phiếu giấy:<br />
-                            - <strong>L (Learned)</strong>: Những bài học/cách mới em đã rút ra được hôm nay là gì?<br /><br />
-                            Và hãy lựa chọn 1 <strong>cam kết hành động trong 7 ngày</strong> tiếp theo. Bạn đã làm rất tốt!
+                            - <strong>L (Learned)</strong>: Em học được gì về 1+1=3? (1-2 dòng)<br />
+                            - <strong>Cam kết 7 ngày</strong>: Chọn 1 hành vi (đánh dấu tick ✅)<br /><br />
+                            🌟 "Synergy không phải thắng–thua; là giải pháp mới giữ điều tốt của cả hai."
                         </p>
                     </Card>
                 )}
