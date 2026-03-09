@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card } from '../../components/ui/Card';
 import { Button } from '../../components/ui/Button';
 
@@ -9,9 +9,19 @@ export default function StudentLogin() {
     const [house, setHouse] = useState<'N' | 'E' | 'W' | 'S' | ''>('');
     const [isLoading, setIsLoading] = useState(false);
 
+    useEffect(() => {
+        const savedName = localStorage.getItem('lim_name');
+        const savedHouse = localStorage.getItem('lim_house');
+        if (savedName) setName(savedName);
+        if (savedHouse) setHouse(savedHouse as any);
+    }, []);
+
     const handleJoin = async (e: React.FormEvent) => {
         e.preventDefault();
         if (!name || !house) return;
+
+        localStorage.setItem('lim_name', name);
+        localStorage.setItem('lim_house', house);
 
         setIsLoading(true);
         // TODO: Create session in Supabase and redirect to /student/dashboard

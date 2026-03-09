@@ -42,6 +42,23 @@ export function GroupPhase({ house, studentId }: GroupPhaseProps) {
         return () => { supabase.removeChannel(channel); };
     }, [house, studentId]);
 
+    // Restore contributions draft from localStorage
+    useEffect(() => {
+        if (role) {
+            const draft = localStorage.getItem(`lim_draft_${house}_${role}`);
+            if (draft) {
+                setMyContributions(draft);
+            }
+        }
+    }, [role, house]);
+
+    // Save contributions draft to localStorage on change
+    useEffect(() => {
+        if (role) {
+            localStorage.setItem(`lim_draft_${house}_${role}`, myContributions);
+        }
+    }, [myContributions, role, house]);
+
     const handleSelectRole = async (selectedRole: 'A' | 'B' | 'C' | 'D') => {
         setLoading(true);
         const { error } = await supabase.from('role_assignments').insert([{
@@ -66,6 +83,7 @@ export function GroupPhase({ house, studentId }: GroupPhaseProps) {
         setLoading(false);
         alert('Đã gửi ý kiến thành công!');
         setMyContributions('');
+        localStorage.removeItem(`lim_draft_${house}_${role}`);
     };
 
     if (loading) return <div>Đang tải dữ liệu nhóm...</div>;
