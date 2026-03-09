@@ -31,7 +31,7 @@ export function useClassState() {
             .channel('class_state_changes')
             .on(
                 'postgres_changes',
-                { event: 'UPDATE', schema: 'public', table: 'class_state', filter: 'id=eq.1' },
+                { event: 'UPDATE', schema: 'public', table: 'class_state' },
                 (payload) => {
                     console.log('Class state updated:', payload.new);
                     setClassState(payload.new as ClassState);

@@ -40,8 +40,12 @@ function DashboardContent() {
                 {phase === 1 && (
                     <Card className="text-center">
                         <h3>Bước 1: KWL (K & W)</h3>
-                        <p style={{ color: 'var(--text-secondary)', marginTop: '12px' }}>
-                            Hãy xem màn hình chung (TV) và viết vào phiếu KWL của bạn.
+                        <p style={{ color: 'var(--text-secondary)', marginTop: '12px', lineHeight: '1.6' }}>
+                            Chủ đề: <strong style={{ color: 'white', fontSize: '1.1rem' }}>{classState?.topic_prompt}</strong><br /><br />
+                            Vui lòng ghi vào phiếu giấy 2 cột đầu tiên:<br />
+                            - <strong>K (Know)</strong>: Em đã biết gì về chủ đề này?<br />
+                            - <strong>W (Want)</strong>: Em muốn học thêm điều gì?<br /><br />
+                            👉 Hãy nhìn lên TV và chuẩn bị bút + phiếu giấy.
                         </p>
                     </Card>
                 )}
@@ -89,8 +93,10 @@ function DashboardContent() {
                 {phase === 6 && (
                     <Card className="text-center">
                         <h3>Bước 6: KWL (L) & Cam kết</h3>
-                        <p style={{ color: 'var(--text-secondary)', marginTop: '12px' }}>
-                            Điền phần L vào phiếu giấy và lựa chọn 1 cam kết 7 ngày. Bạn đã làm rất tốt!
+                        <p style={{ color: 'var(--text-secondary)', marginTop: '12px', lineHeight: '1.6' }}>
+                            Vui lòng ghi vào phần cuối của phiếu giấy:<br />
+                            - <strong>L (Learned)</strong>: Những bài học/cách mới em đã rút ra được hôm nay là gì?<br /><br />
+                            Và hãy lựa chọn 1 <strong>cam kết hành động trong 7 ngày</strong> tiếp theo. Bạn đã làm rất tốt!
                         </p>
                     </Card>
                 )}

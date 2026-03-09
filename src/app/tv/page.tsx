@@ -21,10 +21,15 @@ export default function TvDisplay() {
                 return (
                     <div className="flex-column gap-xl text-center">
                         <h1 style={{ fontSize: '4rem', color: 'var(--primary)' }}>Bước 1: KWL (Giấy)</h1>
+                        {classState?.topic_prompt && (
+                            <h2 style={{ fontSize: '2.5rem', background: 'var(--surface)', padding: '16px', borderRadius: '16px' }}>
+                                Chủ đề: <span className="text-gradient-alt">{classState.topic_prompt}</span>
+                            </h2>
+                        )}
                         <div className="glass-card" style={{ padding: '40px' }}>
                             <div style={{ fontSize: '2rem', marginBottom: '24px' }}>
-                                <p><strong>K:</strong> Em đã biết gì... (1-2 gạch đầu dòng)</p>
-                                <p><strong>W:</strong> Em muốn học gì... (1 gạch đầu dòng)</p>
+                                <p><strong>K (Know):</strong> Em đã biết gì về chủ đề này? (1-2 gạch đầu dòng)</p>
+                                <p><strong>W (Want):</strong> Em muốn học thêm điều gì hôm nay? (1 gạch đầu dòng)</p>
                             </div>
                             <p style={{ color: 'var(--warning)', fontSize: '1.5rem' }}>👉 Cả lớp chuẩn bị bút và phiếu nhé!</p>
                         </div>

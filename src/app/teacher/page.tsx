@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useClassState } from '../../hooks/useClassState';
 import { supabase } from '../../lib/supabase';
 import { Card } from '../../components/ui/Card';
@@ -19,6 +19,30 @@ const PHASES = [
 export default function TeacherDashboard() {
     const { classState, loading } = useClassState();
     const [activeTab, setActiveTab] = useState<'control' | 'preview'>('control');
+    const [stats, setStats] = useState({ N: 0, E: 0, W: 0, S: 0 });
+
+    useEffect(() => {
+        const fetchStats = async () => {
+            const { data } = await supabase.from('student_session').select('house');
+            if (data) {
+                const newStats = { N: 0, E: 0, W: 0, S: 0 };
+                data.forEach((s: any) => {
+                    if (newStats[s.house as keyof typeof newStats] !== undefined) {
+                        newStats[s.house as keyof typeof newStats]++;
+                    }
+                });
+                setStats(newStats);
+            }
+        };
+
+        fetchStats();
+
+        const channel = supabase.channel('student_stats')
+            .on('postgres_changes', { event: '*', schema: 'public', table: 'student_session' }, fetchStats)
+            .subscribe();
+
+        return () => { supabase.removeChannel(channel); };
+    }, []);
 
     if (loading) return <div className="flex-center" style={{ minHeight: '100vh' }}>Đang tải...</div>;
 
@@ -130,7 +154,7 @@ export default function TeacherDashboard() {
                                 {['N', 'E', 'W', 'S'].map(house => (
                                     <div key={house} className="glass-card" style={{ padding: '12px', textAlign: 'center' }}>
                                         <h4 style={{ color: `var(--house-${house.toLowerCase()})` }}>Nhà {house}</h4>
-                                        <div style={{ fontSize: '1.5rem', fontWeight: 'bold' }}>0 HS</div>
+                                        <div style={{ fontSize: '1.5rem', fontWeight: 'bold' }}>{stats[house as keyof typeof stats]} HS</div>
                                     </div>
                                 ))}
                             </div>

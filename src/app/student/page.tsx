@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import { supabase } from '../../lib/supabase';
 import { Card } from '../../components/ui/Card';
 import { Button } from '../../components/ui/Button';
 
@@ -24,12 +25,23 @@ export default function StudentLogin() {
         localStorage.setItem('lim_house', house);
 
         setIsLoading(true);
-        // TODO: Create session in Supabase and redirect to /student/dashboard
-        setTimeout(() => {
-            setIsLoading(false);
-            // Mock navigation
-            window.location.href = `/student/dashboard?house=${house}&name=${encodeURIComponent(name)}`;
-        }, 1000);
+        let sessionId = localStorage.getItem('lim_session_id');
+
+        try {
+            if (!sessionId) {
+                const { data } = await (supabase as any).from('student_session').insert({ name, house }).select('id').single();
+                if (data?.id) {
+                    sessionId = data.id as string;
+                    localStorage.setItem('lim_session_id', sessionId);
+                }
+            } else {
+                await (supabase as any).from('student_session').update({ name, house }).eq('id', sessionId);
+            }
+        } catch (error) {
+            console.error(error);
+        }
+
+        window.location.href = `/student/dashboard?house=${house}&name=${encodeURIComponent(name)}&uid=${sessionId || ''}`;
     };
 
     const houses = [
