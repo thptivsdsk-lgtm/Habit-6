@@ -140,8 +140,8 @@ export function GroupPhase({ house, studentId }: GroupPhaseProps) {
             <div className="flex-column gap-md">
                 <h3 className="text-center" style={{ marginBottom: '16px' }}>Chọn Vai Trò Nhóm (Quota có hạn)</h3>
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
-                    <Button variant="secondary" disabled={roleCountA >= 2} onClick={() => handleSelectRole('A')}>Vai A ({roleCountA}/2) - Cách của Bạn</Button>
-                    <Button variant="secondary" disabled={roleCountB >= 2} onClick={() => handleSelectRole('B')}>Vai B ({roleCountB}/2) - Cách của Tôi</Button>
+                    <Button variant="secondary" disabled={roleCountA >= 2} onClick={() => handleSelectRole('A')}>Vai A ({roleCountA}/2) - Nên cho dùng</Button>
+                    <Button variant="secondary" disabled={roleCountB >= 2} onClick={() => handleSelectRole('B')}>Vai B ({roleCountB}/2) - Không nên dùng</Button>
                     <Button variant="secondary" disabled={roleCountC >= 2} onClick={() => handleSelectRole('C')}>Vai C ({roleCountC}/2) - Tìm Ý 3</Button>
                     <Button variant="secondary" style={{ border: '2px solid var(--warning)' }} disabled={roleCountD >= 1} onClick={() => handleSelectRole('D')}>Vai D ({roleCountD}/1) - Trọng tài Chốt</Button>
                 </div>
@@ -162,8 +162,8 @@ export function GroupPhase({ house, studentId }: GroupPhaseProps) {
             {/* VAI A */}
             {role === 'A' && (
                 <div className="flex-column gap-sm" style={{ marginTop: '16px' }}>
-                    <p><strong>Nhiệm vụ:</strong> Nhập 1 ý kiến bảo vệ phương án của bạn.</p>
-                    <textarea value={inputA} onChange={(e) => setInputA(e.target.value)} className="input-field" style={{ minHeight: '80px' }} placeholder="VD: Khuyến khích sự tự chủ..." />
+                    <p><strong>Nhiệm vụ:</strong> Nhập 1 ý kiến bảo vệ phương án <strong>Nên Cho Sử Dụng</strong>.</p>
+                    <textarea value={inputA} onChange={(e) => setInputA(e.target.value)} className="input-field" style={{ minHeight: '80px' }} placeholder="VD: Giúp tra cứu tài liệu nhanh..." />
                     <Button onClick={() => submitContribution(inputA)} disabled={!inputA.trim() || loading}>Gửi Ý 1</Button>
                     {completedA.length > 0 && <p className="text-success mt-2">✅ Bạn đã gửi: {completedA[completedA.length - 1].content}</p>}
                 </div>
@@ -172,8 +172,8 @@ export function GroupPhase({ house, studentId }: GroupPhaseProps) {
             {/* VAI B */}
             {role === 'B' && (
                 <div className="flex-column gap-sm" style={{ marginTop: '16px' }}>
-                    <p><strong>Nhiệm vụ:</strong> Nhập 1 ý kiến bảo vệ phương án của bạn.</p>
-                    <textarea value={inputB} onChange={(e) => setInputB(e.target.value)} className="input-field" style={{ minHeight: '80px' }} placeholder="VD: Giữ lớp học tập trung..." />
+                    <p><strong>Nhiệm vụ:</strong> Nhập 1 ý kiến bảo vệ phương án <strong>Không Nên Chọn</strong>.</p>
+                    <textarea value={inputB} onChange={(e) => setInputB(e.target.value)} className="input-field" style={{ minHeight: '80px' }} placeholder="VD: Gây mất tập trung..." />
                     <Button onClick={() => submitContribution(inputB)} disabled={!inputB.trim() || loading}>Gửi Ý 2</Button>
                     {completedB.length > 0 && <p className="text-success mt-2">✅ Bạn đã gửi: {completedB[completedB.length - 1].content}</p>}
                 </div>
