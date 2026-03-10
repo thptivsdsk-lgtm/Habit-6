@@ -85,11 +85,16 @@ export default function StudentLogin() {
                                         background: house === h.id ? `${h.color}33` : 'rgba(255,255,255,0.05)',
                                         color: 'white',
                                         fontWeight: 'bold',
-                                        transition: 'all var(--transition-fast)'
+                                        transition: 'all var(--transition-fast)',
+                                        display: 'flex',
+                                        flexDirection: 'column',
+                                        alignItems: 'center',
+                                        justifyContent: 'center',
+                                        gap: '8px'
                                     }}
                                 >
-                                    <span style={{ color: h.color, display: 'block', fontSize: '1.5rem', marginBottom: '4px' }}>{h.id}</span>
-                                    {h.name}
+                                    <img src={`/logo/Nha ${h.id}.png`} alt={`Logo Nhà ${h.id}`} style={{ width: '48px', height: '48px', objectFit: 'contain' }} />
+                                    <span>{h.name}</span>
                                 </button>
                             ))}
                         </div>
