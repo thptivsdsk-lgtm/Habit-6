@@ -67,12 +67,20 @@ export default function TeacherDashboard() {
 
     return (
         <div className="container" style={{ padding: '24px 0' }}>
-            <header className="flex-between glass-panel" style={{ marginBottom: '24px' }}>
-                <h2>Bảng Điều Khiển Giáo Viên</h2>
-                <Button onClick={openTVWindow} variant="secondary" className="flex-center gap-sm">
-                    <ExternalLink size={18} />
-                    Mở Màn Chiếu (/tv)
-                </Button>
+            <header className="glass-panel flex-column" style={{ marginBottom: '24px', alignItems: 'flex-start', gap: '16px' }}>
+                <div className="flex-between" style={{ width: '100%' }}>
+                    <h2>Bảng Điều Khiển Giáo Viên</h2>
+                    <Button onClick={openTVWindow} variant="secondary" className="flex-center gap-sm">
+                        <ExternalLink size={18} />
+                        Mở Màn Chiếu (/tv)
+                    </Button>
+                </div>
+                {classState?.topic_prompt && (
+                    <div style={{ background: 'rgba(255,255,255,0.05)', padding: '12px 16px', borderRadius: '8px', width: '100%' }}>
+                        <span style={{ color: 'var(--text-secondary)' }}>Vấn đề thảo luận: </span>
+                        <strong className="text-gradient-alt" style={{ fontSize: '1.2rem' }}>{classState.topic_prompt}</strong>
+                    </div>
+                )}
             </header>
 
             <div className="flex-center gap-md" style={{ marginBottom: '24px' }}>

@@ -99,11 +99,11 @@ export default function TvDisplay() {
                             <Card glassType="panel">
                                 <h3 style={{ borderBottom: '1px solid var(--surface-border)', paddingBottom: '16px', marginBottom: '16px' }}>Nhịp 12 Phút</h3>
                                 <ul style={{ fontSize: '1.4rem', lineHeight: '2.5', listStyleType: 'none', padding: 0 }}>
-                                    <li><strong>0-2' (A)</strong>: Vai A nhập 2 ý</li>
-                                    <li><strong>2-4' (B)</strong>: Vai B nhập 2 ý</li>
-                                    <li><strong>4-6' (C)</strong>: C chốt điều tốt cần giữ lại</li>
-                                    <li><strong>6-10' (C)</strong>: C điền Ý 3 = 3 quy định + 1 xử lý</li>
-                                    <li><strong>10-12' (D)</strong>: D checklist → CHỐT NỘP</li>
+                                    <li><strong>Vai A (Nên dùng)</strong>: Nhập các ý kiến</li>
+                                    <li><strong>Vai B (Không nên)</strong>: Nhập các ý kiến</li>
+                                    <li><strong>Vai C</strong>: Chốt điều cần giữ lại</li>
+                                    <li><strong>Vai C</strong>: Điền Ý 3 = 3 quy định + 1 xử lý</li>
+                                    <li><strong>Vai D</strong>: Kiểm tra → CHỐT NỘP</li>
                                 </ul>
                                 {classState?.timer_ends_at && (
                                     <div className="flex-center" style={{ marginTop: '24px', padding: '16px', background: 'rgba(255,255,255,0.05)', borderRadius: '12px' }}>
@@ -118,8 +118,8 @@ export default function TvDisplay() {
                                         <h3 style={{ fontSize: '2.5rem', width: '120px' }}>Nhà {house}</h3>
                                         <div style={{ flex: 1, display: 'flex', justifyContent: 'space-between', fontSize: '1.5rem', padding: '0 24px', opacity: progress[house].status === 'submitted' ? 1 : 0.6 }}>
                                             <span>Vai: {progress[house].roles}/7</span>
-                                            <span style={{ color: progress[house].a >= 2 ? 'var(--success)' : 'inherit' }}>A: {progress[house].a}/2</span>
-                                            <span style={{ color: progress[house].b >= 2 ? 'var(--success)' : 'inherit' }}>B: {progress[house].b}/2</span>
+                                            <span style={{ color: progress[house].a >= 2 ? 'var(--success)' : 'inherit' }}>A (Nên): {progress[house].a}/2</span>
+                                            <span style={{ color: progress[house].b >= 2 ? 'var(--success)' : 'inherit' }}>B (Không): {progress[house].b}/2</span>
                                             <span style={{ color: progress[house].gold ? 'var(--success)' : 'inherit' }}>Giữ lại: {progress[house].gold ? '✅' : '⏳'}</span>
                                             <span style={{ color: progress[house].y3 ? 'var(--success)' : 'inherit' }}>Ý 3: {progress[house].y3 ? '✅' : '⏳'}</span>
                                             <span style={{ color: progress[house].d ? 'var(--success)' : 'inherit' }}>Chốt: {progress[house].d ? '✅' : '⏳'}</span>
