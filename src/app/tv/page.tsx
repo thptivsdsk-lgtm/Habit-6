@@ -10,7 +10,7 @@ import { useSearchParams } from 'next/navigation';
 import { ShieldCheck, LogIn } from 'lucide-react';
 import { Button } from '../../components/ui/Button';
 
-export default function TvDisplay() {
+function TvDisplayContent() {
     const searchParams = useSearchParams();
     const urlSession = searchParams.get('session');
 
@@ -380,5 +380,13 @@ export default function TvDisplay() {
         .bg-mesh { opacity: 0.5; }
       `}} />
         </div>
+    );
+}
+
+export default function TvDisplay() {
+    return (
+        <React.Suspense fallback={<div className="flex-center" style={{ minHeight: '100vh', fontSize: '2rem' }}>Đang tải hệ thống...</div>}>
+            <TvDisplayContent />
+        </React.Suspense>
     );
 }
