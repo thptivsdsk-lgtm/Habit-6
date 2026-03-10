@@ -8,12 +8,12 @@ import { Button } from '../../components/ui/Button';
 import { Play, Square, ExternalLink } from 'lucide-react';
 
 const PHASES = [
-    { id: 1, name: '0’–2’ KWL giấy: K + W', targetDuration: 2 * 60 },
-    { id: 2, name: '2’–7’ Khởi động SEE: Poll', targetDuration: 5 * 60 },
-    { id: 3, name: '7’–9’ Trò SYNERGY (Yes, And)', targetDuration: 2 * 60 },
-    { id: 4, name: '9’–21’ Làm nhóm DO (Tạo Ý 3)', targetDuration: 12 * 60 },
-    { id: 5, name: '21’–35’ Thuyết trình GET', targetDuration: 14 * 60 },
-    { id: 6, name: '35’–40’ KWL giấy: L + cam kết', targetDuration: 5 * 60 },
+    { id: 1, name: 'KWL giấy: K + W', targetDuration: 2 * 60 },
+    { id: 2, name: 'Khởi động SEE: Poll', targetDuration: 5 * 60 },
+    { id: 3, name: 'Trò SYNERGY (Yes, And)', targetDuration: 2 * 60 },
+    { id: 4, name: 'Làm nhóm DO (Tạo Ý 3)', targetDuration: 12 * 60 },
+    { id: 5, name: 'Thuyết trình GET', targetDuration: 14 * 60 },
+    { id: 6, name: 'KWL giấy: L + cam kết', targetDuration: 5 * 60 },
 ];
 
 export default function TeacherDashboard() {

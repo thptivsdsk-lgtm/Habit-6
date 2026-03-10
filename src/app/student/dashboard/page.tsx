@@ -49,10 +49,9 @@ function DashboardContent() {
             <main>
                 {phase === 1 && (
                     <Card className="text-center">
-                        <h3>0’–2’ KWL giấy: K + W</h3>
+                        <h3>KWL giấy: K + W</h3>
                         <p style={{ color: 'var(--text-secondary)', marginTop: '12px', lineHeight: '1.6' }}>
-                            Chủ đề: <strong style={{ color: 'white', fontSize: '1.1rem' }}>{classState?.topic_prompt}</strong><br /><br />
-                            Vui lòng ghi vào phiếu giấy:<br />
+                            Vui lòng xem hướng dẫn trên tivi và ghi vào phiếu giấy:<br /><br />
                             - <strong>K</strong>: Em đã biết gì về "khác biệt khi làm nhóm"?<br />
                             - <strong>W</strong>: Em muốn đạt điều gì khi thảo luận hôm nay?<br /><br />
                             👉 Lưu ý: Viết rất ngắn, 1 gạch đầu dòng mỗi ô.
@@ -62,7 +61,7 @@ function DashboardContent() {
 
                 {phase === 2 && (
                     <Card className="text-center flex-column gap-md">
-                        <h3>2’–7’ Khởi động SEE: Poll</h3>
+                        <h3>Khởi động SEE: Poll</h3>
                         <p style={{ color: 'var(--text-secondary)' }}>“Nếu cả tháng ngày nào em cũng ăn món em thích nhất, em nghĩ điều gì sẽ xảy ra?”</p>
                         <div className="flex-column gap-sm" style={{ textAlign: 'left', marginTop: '12px' }}>
                             <button className="btn-secondary" style={{ padding: '8px 16px', borderRadius: '8px', textAlign: 'left' }}>A. Em vẫn thích như cũ</button>
@@ -78,7 +77,7 @@ function DashboardContent() {
 
                 {phase === 3 && (
                     <Card className="text-center flex-column gap-md">
-                        <h3>7’–9’ Trò chơi Synergy (2 phút)</h3>
+                        <h3>Trò chơi Synergy</h3>
                         <div style={{ background: 'rgba(255,255,255,0.05)', padding: '16px', borderRadius: '8px', textAlign: 'left' }}>
                             <p style={{ color: 'var(--warning)', fontWeight: 'bold', marginBottom: '8px' }}>⚠️ Không nhập web. Chỉ nói theo mẫu.</p>
                             <p style={{ lineHeight: '1.5' }}>Mỗi nhà chọn nhanh 2 bạn đứng tại chỗ:</p>
@@ -90,7 +89,7 @@ function DashboardContent() {
 
                 {phase === 4 && (
                     <Card>
-                        <h3 className="text-center" style={{ marginBottom: '24px' }}>9’–21’ Làm nhóm DO (Tạo Ý 3)</h3>
+                        <h3 className="text-center" style={{ marginBottom: '24px' }}>Làm nhóm DO (Tạo Ý 3)</h3>
                         <div className="flex-center gap-md text-center flex-column" style={{ marginBottom: '24px' }}>
                             <p>Chủ đề: <strong className="text-gradient-alt" style={{ fontSize: '1.2rem' }}>{classState?.topic_prompt}</strong></p>
                         </div>
@@ -107,7 +106,7 @@ function DashboardContent() {
 
                 {phase === 5 && (
                     <Card className="text-center">
-                        <h3>21’–35’ Thuyết trình GET</h3>
+                        <h3>Thuyết trình GET</h3>
                         <p style={{ color: 'var(--text-secondary)', marginTop: '12px', lineHeight: '1.6', textAlign: 'left', display: 'inline-block' }}>
                             <strong>Đội hình nhà {house} (Chỉ ~3 phút):</strong><br />
                             - A (2 bạn): Ý 1 (10-15s)<br />
@@ -121,7 +120,7 @@ function DashboardContent() {
 
                 {phase === 6 && (
                     <Card className="text-center">
-                        <h3>35’–40’ KWL giấy: L + cam kết</h3>
+                        <h3>KWL giấy: L + cam kết</h3>
                         <p style={{ color: 'var(--text-secondary)', marginTop: '12px', lineHeight: '1.6' }}>
                             Vui lòng ghi vào phần cuối của phiếu giấy:<br />
                             - <strong>L (Learned)</strong>: Em học được gì về 1+1=3? (1-2 dòng)<br />

@@ -28,18 +28,15 @@ export default function TvDisplay() {
             case 1:
                 return (
                     <div className="flex-column gap-xl text-center" style={{ maxWidth: '1200px', margin: '0 auto' }}>
-                        <h1 style={{ fontSize: '4rem', color: 'var(--primary)' }}>0’–2’ KWL giấy: K + W</h1>
-                        {classState?.topic_prompt && (
-                            <h2 style={{ fontSize: '2.5rem', background: 'var(--surface)', padding: '16px', borderRadius: '16px' }}>
-                                Chủ đề: <span className="text-gradient-alt">{classState.topic_prompt}</span>
-                            </h2>
-                        )}
+                        <h1 style={{ fontSize: '4rem', color: 'var(--primary)' }}>KWL giấy: K + W (2 phút)</h1>
                         <div className="glass-card flex-column gap-md" style={{ padding: '40px', textAlign: 'left' }}>
+                            <p style={{ fontSize: '2rem', color: 'var(--warning)', marginBottom: '16px', fontWeight: 'bold' }}>GV: bật màn chiếu hướng dẫn K/W + timer 2:00</p>
+                            <p style={{ fontSize: '2rem', color: 'var(--text-secondary)', marginBottom: '16px', fontWeight: 'bold' }}>HS (phiếu giấy):</p>
                             <div style={{ fontSize: '2.5rem', marginBottom: '24px', lineHeight: '1.5' }}>
                                 <p><strong>K:</strong> Em đã biết gì về “khác biệt khi làm nhóm”? <span style={{ fontSize: '1.5rem', opacity: 0.8 }}>(1 gạch đầu dòng)</span></p>
                                 <p><strong>W:</strong> Em muốn đạt điều gì khi thảo luận hôm nay? <span style={{ fontSize: '1.5rem', opacity: 0.8 }}>(1 gạch đầu dòng)</span></p>
                             </div>
-                            <p style={{ color: 'var(--warning)', fontSize: '2rem', textAlign: 'center', fontWeight: 'bold' }}>⚠️ Nhấn “viết rất ngắn”, không viết dài!</p>
+                            <p style={{ color: 'var(--warning)', fontSize: '2rem', textAlign: 'center', fontWeight: 'bold' }}>Nhấn “viết rất ngắn”, không viết dài.</p>
                         </div>
                         {classState?.timer_ends_at && (
                             <div style={{ marginTop: '40px' }}>
@@ -78,7 +75,7 @@ export default function TvDisplay() {
             case 3:
                 return (
                     <div className="flex-column gap-xl text-center" style={{ maxWidth: '1200px', margin: '0 auto' }}>
-                        <h1 style={{ fontSize: '4rem', color: 'var(--accent)' }}>7’–9’ Trò chơi Synergy (2 phút)</h1>
+                        <h1 style={{ fontSize: '4rem', color: 'var(--accent)' }}>Trò chơi Synergy</h1>
                         <div className="glass-card flex-column flex-center gap-md" style={{ padding: '40px', marginTop: '20px' }}>
                             <h2 style={{ fontSize: '3rem', color: 'var(--warning)', margin: 0 }}>Cách nói mẫu:</h2>
                             <p style={{ fontSize: '2.5rem', fontWeight: 'bold', margin: '20px 0' }}>💬 "Mình hiểu ý bạn, và mình đề nghị..."</p>
@@ -94,7 +91,7 @@ export default function TvDisplay() {
             case 4:
                 return (
                     <div className="flex-column gap-lg text-center" style={{ width: '100%', maxWidth: '1400px', margin: '0 auto' }}>
-                        <h1 style={{ fontSize: '3.5rem', color: 'var(--primary)' }}>9’–21’ Làm nhóm DO: tạo Ý 3 (12 phút)</h1>
+                        <h1 style={{ fontSize: '3.5rem', color: 'var(--primary)' }}>Làm nhóm DO: tạo Ý 3</h1>
                         {classState?.topic_prompt && (
                             <h2 style={{ fontSize: '2rem', background: 'var(--surface)', padding: '16px', borderRadius: '16px' }}>
                                 Chủ đề: <span className="text-gradient-alt">{classState.topic_prompt}</span>
@@ -103,7 +100,7 @@ export default function TvDisplay() {
 
                         <div style={{ display: 'grid', gridTemplateColumns: 'minmax(350px, 400px) 1fr', gap: '32px', marginTop: '24px', textAlign: 'left' }}>
                             <Card glassType="panel">
-                                <h3 style={{ borderBottom: '1px solid var(--surface-border)', paddingBottom: '16px', marginBottom: '16px' }}>Nhịp 12 Phút</h3>
+                                <h3 style={{ borderBottom: '1px solid var(--surface-border)', paddingBottom: '16px', marginBottom: '16px' }}>Nhiệm vụ các Vai</h3>
                                 <ul style={{ fontSize: '1.4rem', lineHeight: '2.5', listStyleType: 'none', padding: 0 }}>
                                     <li><strong>Vai A (Nên dùng)</strong>: Nhập các ý kiến</li>
                                     <li><strong>Vai B (Không nên)</strong>: Nhập các ý kiến</li>
@@ -140,7 +137,7 @@ export default function TvDisplay() {
             case 5:
                 return (
                     <div className="flex-column gap-xl text-center" style={{ width: '100%', maxWidth: '1400px', margin: '0 auto', position: 'relative' }}>
-                        <h1 style={{ fontSize: '4rem', color: 'var(--secondary)' }}>21’–35’ Thuyết trình GET (14 phút)</h1>
+                        <h1 style={{ fontSize: '4rem', color: 'var(--secondary)' }}>Thuyết trình GET</h1>
                         {focusedHouse === null && <p style={{ fontSize: '2rem', color: 'var(--text-secondary)' }}>Mỗi nhà ~3 phút (lên - nói - xuống)</p>}
 
                         {focusedHouse ? (
@@ -199,7 +196,7 @@ export default function TvDisplay() {
             case 6:
                 return (
                     <div className="flex-center flex-column gap-xl text-center">
-                        <h1 style={{ fontSize: '4rem', color: 'var(--success)' }}>35’–40’ KWL giấy: L + cam kết (5 phút)</h1>
+                        <h1 style={{ fontSize: '4rem', color: 'var(--success)' }}>KWL giấy: L + cam kết</h1>
                         <div className="glass-card flex-column" style={{ padding: '60px', maxWidth: '1200px', textAlign: 'left' }}>
                             <p style={{ fontSize: '2.5rem', marginBottom: '40px', lineHeight: '1.5' }}>
                                 <strong>L (Learned)</strong>: Em học được gì về 1+1=3? <span style={{ opacity: 0.8 }}>(1–2 dòng)</span>
