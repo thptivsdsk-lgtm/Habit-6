@@ -162,9 +162,9 @@ export function GroupPhase({ house, studentId }: GroupPhaseProps) {
             {/* VAI A */}
             {role === 'A' && (
                 <div className="flex-column gap-sm" style={{ marginTop: '16px' }}>
-                    <p><strong>Nhiệm vụ:</strong> Nhập 1 ý kiến bảo vệ phương án <strong>Nên Cho Sử Dụng</strong>.</p>
-                    <textarea value={inputA} onChange={(e) => setInputA(e.target.value)} className="input-field" style={{ minHeight: '80px' }} placeholder="VD: Giúp tra cứu tài liệu nhanh..." />
-                    <Button onClick={() => submitContribution(inputA)} disabled={!inputA.trim() || loading}>Gửi Ý 1</Button>
+                    <p><strong>Nhiệm vụ:</strong> Nhập các ý kiến bảo vệ phương án <strong>Nên Cho Sử Dụng</strong> (mỗi bạn có thể nhập nhiều ý, mỗi ý 1 gạch đầu dòng).</p>
+                    <textarea value={inputA} onChange={(e) => setInputA(e.target.value)} className="input-field" style={{ minHeight: '80px' }} placeholder="- Giúp tra cứu tài liệu nhanh...&#10;- Dễ liên lạc với gia đình..." />
+                    <Button onClick={() => submitContribution(inputA)} disabled={!inputA.trim() || loading}>Gửi Ý Kiến</Button>
                     {completedA.length > 0 && <p className="text-success mt-2">✅ Bạn đã gửi: {completedA[completedA.length - 1].content}</p>}
                 </div>
             )}
@@ -172,9 +172,9 @@ export function GroupPhase({ house, studentId }: GroupPhaseProps) {
             {/* VAI B */}
             {role === 'B' && (
                 <div className="flex-column gap-sm" style={{ marginTop: '16px' }}>
-                    <p><strong>Nhiệm vụ:</strong> Nhập 1 ý kiến bảo vệ phương án <strong>Không Nên Chọn</strong>.</p>
-                    <textarea value={inputB} onChange={(e) => setInputB(e.target.value)} className="input-field" style={{ minHeight: '80px' }} placeholder="VD: Gây mất tập trung..." />
-                    <Button onClick={() => submitContribution(inputB)} disabled={!inputB.trim() || loading}>Gửi Ý 2</Button>
+                    <p><strong>Nhiệm vụ:</strong> Nhập các ý kiến bảo vệ phương án <strong>Không Nên Chọn</strong> (mỗi bạn có thể nhập nhiều ý, mỗi ý 1 gạch đầu dòng).</p>
+                    <textarea value={inputB} onChange={(e) => setInputB(e.target.value)} className="input-field" style={{ minHeight: '80px' }} placeholder="- Gây mất tập trung trong giờ...&#10;- Dễ sa đà vào mạng xã hội..." />
+                    <Button onClick={() => submitContribution(inputB)} disabled={!inputB.trim() || loading}>Gửi Ý Kiến</Button>
                     {completedB.length > 0 && <p className="text-success mt-2">✅ Bạn đã gửi: {completedB[completedB.length - 1].content}</p>}
                 </div>
             )}
