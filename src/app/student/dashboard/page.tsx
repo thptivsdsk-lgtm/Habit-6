@@ -11,6 +11,16 @@ function DashboardContent() {
     const searchParams = useSearchParams();
     const house = searchParams.get('house') || 'N';
     const name = searchParams.get('name') || 'Học sinh';
+    const rawUid = searchParams.get('uid');
+
+    const [uid, setUid] = React.useState(rawUid || '');
+
+    React.useEffect(() => {
+        if (!uid) {
+            const stored = localStorage.getItem('lim_session_id');
+            if (stored) setUid(stored);
+        }
+    }, [uid]);
 
     const { classState, loading } = useClassState();
 
@@ -87,7 +97,11 @@ function DashboardContent() {
 
                         <hr style={{ borderColor: 'var(--surface-border)', margin: '24px 0', opacity: 0.5 }} />
 
-                        <GroupPhase house={house as any} studentId={name + '_' + Date.now()} />
+                        {uid ? (
+                            <GroupPhase house={house as any} studentId={uid} />
+                        ) : (
+                            <p style={{ color: 'var(--warning)' }}>Vui lòng đăng nhập lại để nhận diện mã phiên hợp lệ.</p>
+                        )}
                     </Card>
                 )}
 
