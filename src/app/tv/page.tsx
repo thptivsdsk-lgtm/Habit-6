@@ -28,15 +28,34 @@ export default function TvDisplay() {
             case 1:
                 return (
                     <div className="flex-column gap-xl text-center" style={{ maxWidth: '1200px', margin: '0 auto' }}>
-                        <h1 style={{ fontSize: '4rem', color: 'var(--primary)' }}>KWL giấy: K + W (2 phút)</h1>
-                        <div className="glass-card flex-column gap-md" style={{ padding: '40px', textAlign: 'left' }}>
-                            <p style={{ fontSize: '2rem', color: 'var(--warning)', marginBottom: '16px', fontWeight: 'bold' }}>GV: bật màn chiếu hướng dẫn K/W + timer 2:00</p>
-                            <p style={{ fontSize: '2rem', color: 'var(--text-secondary)', marginBottom: '16px', fontWeight: 'bold' }}>HS (phiếu giấy):</p>
-                            <div style={{ fontSize: '2.5rem', marginBottom: '24px', lineHeight: '1.5' }}>
-                                <p><strong>K:</strong> Em đã biết gì về “khác biệt khi làm nhóm”? <span style={{ fontSize: '1.5rem', opacity: 0.8 }}>(1 gạch đầu dòng)</span></p>
-                                <p><strong>W:</strong> Em muốn đạt điều gì khi thảo luận hôm nay? <span style={{ fontSize: '1.5rem', opacity: 0.8 }}>(1 gạch đầu dòng)</span></p>
+                        <h1 style={{ fontSize: '3.5rem', color: 'var(--primary)', marginBottom: '16px' }}>K – Em đã biết/đã trải nghiệm gì?</h1>
+                        <p style={{ fontSize: '2rem', color: 'var(--warning)', fontWeight: 'bold' }}>GV: Theo dõi thời gian (2 phút)</p>
+                        <div className="glass-card text-left" style={{ padding: '32px 40px', marginTop: '24px', fontSize: '1.8rem', lineHeight: '1.6' }}>
+                            <div className="flex-column gap-md">
+                                <div>
+                                    <strong className="text-gradient">K1. Về “khác biệt” trong nhóm/lớp:</strong> <span style={{ fontSize: '1.4rem', opacity: 0.8 }}>(Khoanh 1 ý đúng với em nhất)</span>
+                                    <ul style={{ listStyleType: 'none', paddingLeft: '24px', margin: '12px 0 0 0', fontSize: '1.6rem' }}>
+                                        <li>☐ Khác biệt thường làm khó làm việc cùng nhau</li>
+                                        <li>☐ Khác biệt giúp nhóm mạnh hơn nếu biết cách</li>
+                                        <li>☐ Em chưa rõ khác biệt giúp hay hại</li>
+                                    </ul>
+                                </div>
+                                <hr style={{ borderColor: 'var(--surface-border)', margin: '12px 0', opacity: 0.5 }} />
+                                <div>
+                                    <strong className="text-gradient">K2. Em từng thấy “cùng nhau tốt hơn” trong tình huống nào?</strong> <span style={{ fontSize: '1.4rem', opacity: 0.8 }}>(viết 1 ví dụ thật ngắn)</span>
+                                    <p style={{ margin: '12px 0 0 24px', fontSize: '1.6rem' }}>Ví dụ: ________________________________________________________</p>
+                                </div>
+                                <hr style={{ borderColor: 'var(--surface-border)', margin: '12px 0', opacity: 0.5 }} />
+                                <div>
+                                    <strong className="text-gradient">K3. Khi có ý kiến trái nhau, nhóm thường…</strong> <span style={{ fontSize: '1.4rem', opacity: 0.8 }}>(tick 1)</span>
+                                    <div style={{ display: 'flex', gap: '32px', margin: '12px 0 0 24px', fontSize: '1.6rem' }}>
+                                        <span>☐ cãi nhau</span>
+                                        <span>☐ im lặng</span>
+                                        <span>☐ mỗi người một ý</span>
+                                        <span>☐ tìm cách kết hợp</span>
+                                    </div>
+                                </div>
                             </div>
-                            <p style={{ color: 'var(--warning)', fontSize: '2rem', textAlign: 'center', fontWeight: 'bold' }}>Nhấn “viết rất ngắn”, không viết dài.</p>
                         </div>
                         {classState?.timer_ends_at && (
                             <div style={{ marginTop: '40px' }}>

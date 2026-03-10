@@ -49,12 +49,10 @@ function DashboardContent() {
             <main>
                 {phase === 1 && (
                     <Card className="text-center">
-                        <h3>KWL giấy: K + W</h3>
-                        <p style={{ color: 'var(--text-secondary)', marginTop: '12px', lineHeight: '1.6' }}>
-                            Vui lòng xem hướng dẫn trên tivi và ghi vào phiếu giấy:<br /><br />
-                            - <strong>K</strong>: Em đã biết gì về "khác biệt khi làm nhóm"?<br />
-                            - <strong>W</strong>: Em muốn đạt điều gì khi thảo luận hôm nay?<br /><br />
-                            👉 Lưu ý: Viết rất ngắn, 1 gạch đầu dòng mỗi ô.
+                        <h3 style={{ color: 'var(--primary)', marginBottom: '16px' }}>K – Em đã biết/đã trải nghiệm gì?</h3>
+                        <p style={{ color: 'var(--text-secondary)', marginTop: '12px', lineHeight: '1.6', fontSize: '1.1rem' }}>
+                            Vui lòng xem hướng dẫn trên <strong style={{ color: 'white' }}>Màn chiếu TV</strong> và hoàn thành phần K trên phiếu giấy của em.<br /><br />
+                            <span style={{ color: 'var(--warning)' }}>👉 Lưu ý: Trả lời thật ngắn gọn vào các câu K1, K2, K3 trong vòng 2 phút.</span>
                         </p>
                     </Card>
                 )}
