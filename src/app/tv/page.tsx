@@ -9,6 +9,12 @@ import { Timer } from '../../components/ui/Timer';
 export default function TvDisplay() {
     const { classState, loading } = useClassState();
     const { progress } = useHousesProgress();
+    const [focusedHouse, setFocusedHouse] = React.useState<string | null>(null);
+
+    // Reset focused house if phase changes
+    React.useEffect(() => {
+        setFocusedHouse(null);
+    }, [classState?.phase]);
 
     if (loading) {
         return <div className="flex-center" style={{ minHeight: '100vh', fontSize: '2rem' }}>Đang tải màn chiếu...</div>;
@@ -133,24 +139,61 @@ export default function TvDisplay() {
                 );
             case 5:
                 return (
-                    <div className="flex-column gap-xl text-center" style={{ width: '100%', maxWidth: '1400px', margin: '0 auto' }}>
+                    <div className="flex-column gap-xl text-center" style={{ width: '100%', maxWidth: '1400px', margin: '0 auto', position: 'relative' }}>
                         <h1 style={{ fontSize: '4rem', color: 'var(--secondary)' }}>21’–35’ Thuyết trình GET (14 phút)</h1>
-                        <p style={{ fontSize: '2rem', color: 'var(--text-secondary)' }}>Mỗi nhà ~3 phút (lên - nói - xuống)</p>
+                        {focusedHouse === null && <p style={{ fontSize: '2rem', color: 'var(--text-secondary)' }}>Mỗi nhà ~3 phút (lên - nói - xuống)</p>}
 
-                        <div style={{ display: 'grid', gridTemplateColumns: 'minmax(300px, 1fr) minmax(300px, 1fr)', gap: '32px', width: '100%', marginTop: '24px' }}>
-                            {['N', 'E', 'W', 'S'].map(house => (
-                                <Card key={house} className="text-left" style={{ borderTop: `8px solid var(--house-${house.toLowerCase()})` }}>
-                                    <h3 style={{ fontSize: '2.5rem', color: `var(--house-${house.toLowerCase()})`, marginBottom: '16px' }}>Nhà {house}</h3>
-                                    <div className="flex-column gap-sm" style={{ fontSize: '1.4rem', color: 'var(--text-secondary)' }}>
-                                        <p><strong>Ý 1 (A):</strong> {progress[house].product?.y1 || '⏳ Đang nộp...'}</p>
-                                        <p><strong>Ý 2 (B):</strong> {progress[house].product?.y2 || '⏳ Đang nộp...'}</p>
-                                        <p><strong>Giữ lại:</strong> {progress[house].product?.gold1 || '⏳ Đang nộp...'}</p>
-                                        <p><strong>Ý 3 (C):</strong> <span style={{ color: 'var(--primary)', fontWeight: 'bold' }}>{progress[house].product?.y3 || '⏳ Đang nộp...'}</span></p>
-                                        <p><strong>Vì sao 1+1=3:</strong> <span style={{ color: 'var(--success)', fontWeight: 'bold' }}>{progress[house].product?.why || '⏳ Đang nộp...'}</span></p>
+                        {focusedHouse ? (
+                            <div className="flex-column gap-lg animate-fade-in" style={{ width: '100%' }}>
+                                <div className="flex-between">
+                                    <button onClick={() => setFocusedHouse(null)} className="btn-secondary" style={{ fontSize: '1.5rem', padding: '12px 24px' }}>
+                                        ⬅ Quay lại danh sách
+                                    </button>
+                                </div>
+                                <Card className="text-left" style={{ borderTop: `12px solid var(--house-${focusedHouse.toLowerCase()})`, padding: '60px' }}>
+                                    <div className="flex-between" style={{ marginBottom: '40px' }}>
+                                        <h3 style={{ fontSize: '4.5rem', color: `var(--house-${focusedHouse.toLowerCase()})`, margin: 0 }}>Nhà {focusedHouse}</h3>
+                                        <img src={`/logo/Nha ${focusedHouse}.png`} alt={`Logo Nhà ${focusedHouse}`} style={{ width: '120px', height: '120px', objectFit: 'contain' }} />
+                                    </div>
+                                    <div className="flex-column gap-md" style={{ fontSize: '2.2rem', color: 'var(--text-secondary)', lineHeight: '1.6' }}>
+                                        <p><strong>Ý 1 (Nên dùng):</strong> {progress[focusedHouse].product?.y1 || '⏳ Đang nộp...'}</p>
+                                        <p><strong>Ý 2 (Không nên):</strong> {progress[focusedHouse].product?.y2 || '⏳ Đang nộp...'}</p>
+                                        <hr style={{ borderColor: 'var(--surface-border)', margin: '24px 0', opacity: 0.5 }} />
+                                        <p><strong>Giữ lại:</strong> {progress[focusedHouse].product?.gold1 || '⏳ Đang nộp...'}</p>
+                                        <p><strong>Ý 3 (Giải pháp mới):</strong> <span style={{ color: 'var(--primary)', fontWeight: 'bold' }}>{progress[focusedHouse].product?.y3 || '⏳ Đang nộp...'}</span></p>
+                                        <div style={{ background: 'rgba(255,255,255,0.05)', padding: '24px', borderRadius: '12px', marginTop: '24px' }}>
+                                            <p style={{ margin: 0 }}><strong>Vì sao 1+1=3:</strong> <span style={{ color: 'var(--success)', fontWeight: 'bold' }}>{progress[focusedHouse].product?.why || '⏳ Đang nộp...'}</span></p>
+                                        </div>
                                     </div>
                                 </Card>
-                            ))}
-                        </div>
+                            </div>
+                        ) : (
+                            <div style={{ display: 'grid', gridTemplateColumns: 'minmax(300px, 1fr) minmax(300px, 1fr)', gap: '32px', width: '100%', marginTop: '24px' }}>
+                                {['N', 'E', 'W', 'S'].map(house => (
+                                    <Card
+                                        key={house}
+                                        className="text-left glass-card"
+                                        style={{ borderTop: `8px solid var(--house-${house.toLowerCase()})`, cursor: 'pointer', position: 'relative' }}
+                                        onClick={() => setFocusedHouse(house)}
+                                    >
+                                        <div className="flex-between" style={{ marginBottom: '16px' }}>
+                                            <h3 style={{ fontSize: '2.5rem', color: `var(--house-${house.toLowerCase()})`, margin: 0 }}>Nhà {house}</h3>
+                                            <img src={`/logo/Nha ${house}.png`} alt={`Logo Nhà ${house}`} style={{ width: '60px', height: '60px', objectFit: 'contain' }} />
+                                        </div>
+                                        <div className="flex-column gap-sm" style={{ fontSize: '1.4rem', color: 'var(--text-secondary)' }}>
+                                            <p><strong>Ý 1 (A):</strong> {progress[house].product?.y1?.substring(0, 50) + (progress[house].product?.y1?.length > 50 ? '...' : '') || '⏳ Đang nộp...'}</p>
+                                            <p><strong>Ý 2 (B):</strong> {progress[house].product?.y2?.substring(0, 50) + (progress[house].product?.y2?.length > 50 ? '...' : '') || '⏳ Đang nộp...'}</p>
+                                            <p><strong>Giữ lại:</strong> {progress[house].product?.gold1?.substring(0, 50) + (progress[house].product?.gold1?.length > 50 ? '...' : '') || '⏳ Đang nộp...'}</p>
+                                            <p><strong>Ý 3 (C):</strong> <span style={{ color: 'var(--primary)', fontWeight: 'bold' }}>{progress[house].product?.y3?.substring(0, 50) + (progress[house].product?.y3?.length > 50 ? '...' : '') || '⏳ Đang nộp...'}</span></p>
+                                            <p><strong>Chốt (D):</strong> <span style={{ color: 'var(--success)', fontWeight: 'bold' }}>{progress[house].product?.why?.substring(0, 50) + (progress[house].product?.why?.length > 50 ? '...' : '') || '⏳ Đang nộp...'}</span></p>
+                                        </div>
+                                        <div style={{ position: 'absolute', top: '16px', right: '16px', fontSize: '1.2rem', color: 'var(--primary)', opacity: 0.8 }}>
+                                            Bấm để xem lớn 🔍
+                                        </div>
+                                    </Card>
+                                ))}
+                            </div>
+                        )}
                     </div>
                 );
             case 6:
