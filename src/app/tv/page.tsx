@@ -133,7 +133,7 @@ export default function TvDisplay() {
                                     </div>
 
                                     <p style={{ fontSize: '2rem', fontWeight: 'bold', marginTop: '16px', color: 'var(--success)', borderTop: '1px solid rgba(255,255,255,0.1)', paddingTop: '16px' }}>
-                                        Đã gửi: {pollResponses.length}/27
+                                        Đã gửi: {pollResponses.length} ý kiến
                                     </p>
                                 </div>
                             </Card>
