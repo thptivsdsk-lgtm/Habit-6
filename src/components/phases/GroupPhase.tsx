@@ -5,11 +5,12 @@ import { supabase } from '../../lib/supabase';
 import { Button } from '../ui/Button';
 
 interface GroupPhaseProps {
+    sessionCode: string | null;
     house: 'N' | 'E' | 'W' | 'S';
     studentId: string;
 }
 
-export function GroupPhase({ house, studentId }: GroupPhaseProps) {
+export function GroupPhase({ sessionCode, house, studentId }: GroupPhaseProps) {
     const [role, setRole] = useState<'A' | 'B' | 'C' | 'D' | null>(null);
     const [loading, setLoading] = useState(true);
     const [roleAssignments, setRoleAssignments] = useState<any[]>([]);
@@ -27,24 +28,26 @@ export function GroupPhase({ house, studentId }: GroupPhaseProps) {
 
     // Realtime Subscriptions
     useEffect(() => {
+        if (!sessionCode) return;
+
         const fetchData = async () => {
             try {
                 // Fetch roles
-                const { data: rData } = await supabase.from('role_assignments').select('*').eq('house', house);
+                const { data: rData } = await supabase.from('role_assignments').select('*').eq('session_code', sessionCode).eq('house', house);
                 if (rData) {
                     setRoleAssignments(rData);
                     const myRole = rData.find((r: any) => r.student_id === studentId);
                     if (myRole) setRole((myRole as any).role);
                 }
 
-                // Fetch product (might not exist yet, don't use .single() directly without error handling)
-                const { data: pData } = await supabase.from('group_product').select('*').eq('house', house).limit(1);
+                // Fetch product
+                const { data: pData } = await supabase.from('group_product').select('*').eq('session_code', sessionCode).eq('house', house).limit(1);
                 if (pData && pData.length > 0) {
                     setGroupProduct(pData[0]);
                 }
 
                 // Fetch contributions
-                const { data: cData } = await supabase.from('contributions').select('*').eq('house', house);
+                const { data: cData } = await supabase.from('contributions').select('*').eq('session_code', sessionCode).eq('house', house);
                 if (cData) setContributions(cData);
             } catch (err) {
                 console.error("Error fetching group data", err);
@@ -56,14 +59,14 @@ export function GroupPhase({ house, studentId }: GroupPhaseProps) {
         fetchData();
 
         const channel = supabase
-            .channel(`group_${house}_changes`)
-            .on('postgres_changes', { event: '*', schema: 'public', table: 'role_assignments', filter: `house=eq.${house}` }, fetchData)
-            .on('postgres_changes', { event: '*', schema: 'public', table: 'group_product', filter: `house=eq.${house}` }, fetchData)
-            .on('postgres_changes', { event: '*', schema: 'public', table: 'contributions', filter: `house=eq.${house}` }, fetchData)
+            .channel(`group_${sessionCode}_${house}_changes`)
+            .on('postgres_changes', { event: '*', schema: 'public', table: 'role_assignments', filter: `session_code=eq.${sessionCode}` }, fetchData)
+            .on('postgres_changes', { event: '*', schema: 'public', table: 'group_product', filter: `session_code=eq.${sessionCode}` }, fetchData)
+            .on('postgres_changes', { event: '*', schema: 'public', table: 'contributions', filter: `session_code=eq.${sessionCode}` }, fetchData)
             .subscribe();
 
         return () => { supabase.removeChannel(channel); };
-    }, [house, studentId]);
+    }, [house, studentId, sessionCode]);
 
     // Restore drafts
     useEffect(() => {
@@ -84,7 +87,7 @@ export function GroupPhase({ house, studentId }: GroupPhaseProps) {
 
     const handleSelectRole = async (selectedRole: 'A' | 'B' | 'C' | 'D') => {
         setLoading(true);
-        const { error } = await supabase.from('role_assignments').insert([{ house, role: selectedRole, student_id: studentId }] as any);
+        const { error } = await supabase.from('role_assignments').insert([{ session_code: sessionCode, house, role: selectedRole, student_id: studentId }] as any);
         if (!error) setRole(selectedRole);
         setLoading(false);
     };
@@ -92,7 +95,7 @@ export function GroupPhase({ house, studentId }: GroupPhaseProps) {
     const submitContribution = async (content: string) => {
         if (!content.trim()) return;
         setLoading(true);
-        await supabase.from('contributions').insert([{ house, role, student_id: studentId, content }] as any);
+        await supabase.from('contributions').insert([{ session_code: sessionCode, house, role, student_id: studentId, content }] as any);
 
         // Also update group_product placeholders just to make tracking easy for TV
         if (role === 'A') await updateProduct({ y1: (groupProduct?.y1 ? groupProduct.y1 + " | " + content : content) });
@@ -106,9 +109,9 @@ export function GroupPhase({ house, studentId }: GroupPhaseProps) {
     const updateProduct = async (updates: any) => {
         setLoading(true);
         if (!groupProduct) {
-            await (supabase as any).from('group_product').insert([{ house, status: 'draft', ...updates }]);
+            await (supabase as any).from('group_product').insert([{ session_code: sessionCode, house, status: 'draft', ...updates }]);
         } else {
-            await (supabase as any).from('group_product').update(updates).eq('house', house);
+            await (supabase as any).from('group_product').update(updates).eq('session_code', sessionCode).eq('house', house);
         }
         setLoading(false);
     };

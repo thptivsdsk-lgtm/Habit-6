@@ -8,34 +8,47 @@ import { Button } from '../../components/ui/Button';
 export default function StudentLogin() {
     const [name, setName] = useState('');
     const [house, setHouse] = useState<'N' | 'E' | 'W' | 'S' | ''>('');
+    const [sessionCode, setSessionCode] = useState('');
     const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
         const savedName = localStorage.getItem('lim_name');
         const savedHouse = localStorage.getItem('lim_house');
+        const savedSession = localStorage.getItem('lim_session');
         if (savedName) setName(savedName);
         if (savedHouse) setHouse(savedHouse as any);
+        if (savedSession) setSessionCode(savedSession);
     }, []);
 
     const handleJoin = async (e: React.FormEvent) => {
         e.preventDefault();
-        if (!name || !house) return;
+        if (!name || !house || !sessionCode) return;
+
+        setIsLoading(true);
+
+        // Validate session
+        const { data: sessionInfo } = await (supabase as any).from('class_state').select('session_code').eq('session_code', sessionCode).single();
+        if (!sessionInfo) {
+            alert('Mã tiết học không tồn tại!');
+            setIsLoading(false);
+            return;
+        }
 
         localStorage.setItem('lim_name', name);
         localStorage.setItem('lim_house', house);
+        localStorage.setItem('lim_session', sessionCode);
 
-        setIsLoading(true);
         let sessionId = localStorage.getItem('lim_session_id');
 
         try {
             if (!sessionId) {
-                const { data } = await (supabase as any).from('student_session').insert({ name, house }).select('id').single();
+                const { data } = await (supabase as any).from('student_session').insert({ name, house, session_code: sessionCode }).select('id').single();
                 if (data?.id) {
                     sessionId = data.id as string;
                     localStorage.setItem('lim_session_id', sessionId);
                 }
             } else {
-                await (supabase as any).from('student_session').update({ name, house }).eq('id', sessionId);
+                await (supabase as any).from('student_session').update({ name, house, session_code: sessionCode }).eq('id', sessionId);
             }
         } catch (error) {
             console.error(error);
@@ -57,6 +70,20 @@ export default function StudentLogin() {
                 <h2 className="text-center" style={{ marginBottom: '24px' }}>Tham gia lớp học</h2>
 
                 <form onSubmit={handleJoin} className="flex-column gap-lg">
+                    <div className="flex-column gap-sm">
+                        <label htmlFor="session" style={{ fontWeight: 500 }}>Mã tiết học (PIN)</label>
+                        <input
+                            id="session"
+                            type="text"
+                            value={sessionCode}
+                            onChange={(e) => setSessionCode(e.target.value)}
+                            placeholder="Nhập mã 5 số GV cung cấp..."
+                            maxLength={5}
+                            style={{ padding: '12px', borderRadius: '8px', border: '1px solid var(--surface-border)', background: 'rgba(255,255,255,0.05)', color: 'white', fontSize: '1.2rem', letterSpacing: '2px', textAlign: 'center' }}
+                            required
+                        />
+                    </div>
+
                     <div className="flex-column gap-sm">
                         <label htmlFor="name" style={{ fontWeight: 500 }}>Tên của bạn</label>
                         <input
@@ -100,7 +127,7 @@ export default function StudentLogin() {
                         </div>
                     </div>
 
-                    <Button type="submit" isLoading={isLoading} disabled={!name || !house} style={{ marginTop: '16px' }}>
+                    <Button type="submit" isLoading={isLoading} disabled={!name || !house || !sessionCode} style={{ marginTop: '16px' }}>
                         Vào lớp
                     </Button>
                 </form>

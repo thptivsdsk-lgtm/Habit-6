@@ -6,23 +6,44 @@ import { useHousesProgress } from '../../hooks/useHousesProgress';
 import { Card } from '../../components/ui/Card';
 import { Timer } from '../../components/ui/Timer';
 import { supabase } from '../../lib/supabase';
+import { useSearchParams } from 'next/navigation';
+import { ShieldCheck, LogIn } from 'lucide-react';
+import { Button } from '../../components/ui/Button';
 
 export default function TvDisplay() {
-    const { classState, loading } = useClassState();
-    const { progress } = useHousesProgress();
+    const searchParams = useSearchParams();
+    const urlSession = searchParams.get('session');
+
+    const [isAuthenticated, setIsAuthenticated] = React.useState(false);
+    const [inputPassword, setInputPassword] = React.useState('');
+    const [sessionCode, setSessionCode] = React.useState<string | null>(null);
+    const [joinInput, setJoinInput] = React.useState('');
+
+    const { classState, loading } = useClassState(sessionCode);
+    const { progress } = useHousesProgress(sessionCode);
     const [focusedHouse, setFocusedHouse] = React.useState<string | null>(null);
     const [pollResponses, setPollResponses] = React.useState<any[]>([]);
 
     React.useEffect(() => {
+        const auth = localStorage.getItem('lim_tv_auth');
+        if (auth === 'true') setIsAuthenticated(true);
+        if (urlSession) setSessionCode(urlSession);
+    }, [urlSession]);
+
+    React.useEffect(() => {
+        if (!sessionCode) return;
+
         // Fetch existing polls
         const fetchPolls = async () => {
-            const { data } = await (supabase as any).from('poll_responses').select('*');
+            const { data } = await (supabase as any).from('poll_responses')
+                .select('*')
+                .eq('session_code', sessionCode);
             if (data) setPollResponses(data);
         };
         fetchPolls();
 
         // Listen for new polls via broadcast
-        const channel = supabase.channel('poll_updates_tv')
+        const channel = supabase.channel(`poll_updates_tv_${sessionCode}`)
             .on('broadcast', { event: 'poll_submit' }, (payload) => {
                 setPollResponses(prev => {
                     const existing = prev.findIndex(p => p.student_id === payload.payload.uid);
@@ -35,7 +56,7 @@ export default function TvDisplay() {
                 });
             })
             // Listen for direct DB changes if they run the script
-            .on('postgres_changes', { event: '*', schema: 'public', table: 'poll_responses' }, (payload) => {
+            .on('postgres_changes', { event: '*', schema: 'public', table: 'poll_responses', filter: `session_code=eq.${sessionCode}` }, (payload) => {
                 fetchPolls();
             })
             .subscribe();
@@ -43,15 +64,80 @@ export default function TvDisplay() {
         return () => {
             supabase.removeChannel(channel);
         };
-    }, []);
+    }, [sessionCode]);
 
     // Reset focused house if phase changes
     React.useEffect(() => {
         setFocusedHouse(null);
     }, [classState?.phase]);
 
+    const handleLogin = (e: React.FormEvent) => {
+        e.preventDefault();
+        if (inputPassword === 'nshmadmin') {
+            setIsAuthenticated(true);
+            localStorage.setItem('lim_tv_auth', 'true');
+        } else {
+            alert('Mật khẩu không đúng!');
+        }
+    };
+
+    const handleJoinSession = async (e: React.FormEvent) => {
+        e.preventDefault();
+        if (!joinInput) return;
+        const { data } = await supabase.from('class_state').select('session_code').eq('session_code', joinInput).single();
+        if (data) {
+            setSessionCode(joinInput);
+        } else {
+            alert('Mã PIN Phòng không tồn tại!');
+        }
+    };
+
+    if (!isAuthenticated) return (
+        <div className="container flex-center" style={{ minHeight: '100vh', padding: '24px' }}>
+            <Card style={{ maxWidth: '400px', width: '100%', textAlign: 'center' }}>
+                <ShieldCheck size={48} color="var(--primary)" style={{ margin: '0 auto 16px' }} />
+                <h2>Truy Cập Màn Chiếu TV</h2>
+                <form onSubmit={handleLogin} className="flex-column gap-md" style={{ marginTop: '24px', textAlign: 'left' }}>
+                    <input
+                        type="password"
+                        value={inputPassword}
+                        onChange={e => setInputPassword(e.target.value)}
+                        placeholder="Nhập mật khẩu GV..."
+                        className="input-field"
+                        required
+                    />
+                    <Button type="submit">Xác nhận</Button>
+                </form>
+            </Card>
+        </div>
+    );
+
+    if (!sessionCode) return (
+        <div className="container flex-center" style={{ minHeight: '100vh', padding: '24px' }}>
+            <Card style={{ maxWidth: '400px', width: '100%', textAlign: 'center' }}>
+                <h2>Nhập PIN Tiết Học</h2>
+                <p style={{ margin: '16px 0', opacity: 0.7 }}>Thầy Cô hãy nhập Mã PIN 5 số từ màn hình điều khiển.</p>
+                <form onSubmit={handleJoinSession} className="flex-column gap-sm">
+                    <input
+                        type="text"
+                        value={joinInput}
+                        onChange={e => setJoinInput(e.target.value)}
+                        placeholder="Mã PIN (5 số)..."
+                        className="input-field text-center"
+                        style={{ fontSize: '2rem', letterSpacing: '4px' }}
+                        maxLength={5}
+                        required
+                    />
+                    <Button type="submit" className="flex-center gap-sm" style={{ width: '100%', padding: '16px', fontSize: '1.2rem' }}>
+                        <LogIn size={20} /> Kết nối Màn Chiếu
+                    </Button>
+                </form>
+            </Card>
+        </div>
+    );
+
     if (loading) {
-        return <div className="flex-center" style={{ minHeight: '100vh', fontSize: '2rem' }}>Đang tải màn chiếu...</div>;
+        return <div className="flex-center" style={{ minHeight: '100vh', fontSize: '2rem' }}>Đang tải màn chiếu (Mã PIN: {sessionCode})...</div>;
     }
 
     const phase = classState?.phase || 1;

@@ -16,6 +16,7 @@ function DashboardContent() {
     const rawUid = searchParams.get('uid');
 
     const [uid, setUid] = useState(rawUid || '');
+    const [sessionCode, setSessionCode] = useState<string | null>(null);
 
     // Poll State
     const [pollChoice, setPollChoice] = useState<string>('');
@@ -24,6 +25,8 @@ function DashboardContent() {
     const [pollSubmitted, setPollSubmitted] = useState(false);
 
     useEffect(() => {
+        const storedSession = localStorage.getItem('lim_session');
+        if (storedSession) setSessionCode(storedSession);
         let currentUid = uid;
         if (!currentUid) {
             const stored = localStorage.getItem('lim_session_id');
@@ -45,7 +48,7 @@ function DashboardContent() {
         }
     }, [uid]);
 
-    const { classState, loading } = useClassState();
+    const { classState, loading } = useClassState(sessionCode);
 
     const handlePollSubmit = async () => {
         if (!pollChoice || !pollReason.trim()) {
@@ -59,7 +62,7 @@ function DashboardContent() {
             localStorage.setItem(`lim_poll_reason_${uid}`, pollReason);
 
             // Emit event Realtime
-            await supabase.channel('poll_updates').send({
+            await supabase.channel(`poll_updates_tv_${sessionCode}`).send({
                 type: 'broadcast',
                 event: 'poll_submit',
                 payload: { uid, choice: pollChoice, reason: pollReason }
@@ -68,6 +71,7 @@ function DashboardContent() {
             // Gọi API lưu bảng poll_responses (chờ user chạy SQL)
             await (supabase as any).from('poll_responses').upsert({
                 student_id: uid,
+                session_code: sessionCode,
                 choice: pollChoice,
                 reason: pollReason,
                 house: house
@@ -191,7 +195,7 @@ function DashboardContent() {
                         <hr style={{ borderColor: 'var(--surface-border)', margin: '24px 0', opacity: 0.5 }} />
 
                         {uid ? (
-                            <GroupPhase house={house as any} studentId={uid} />
+                            <GroupPhase sessionCode={sessionCode} house={house as any} studentId={uid} />
                         ) : (
                             <p style={{ color: 'var(--warning)' }}>Vui lòng đăng nhập lại để nhận diện mã phiên hợp lệ.</p>
                         )}

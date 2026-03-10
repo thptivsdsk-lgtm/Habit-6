@@ -5,7 +5,7 @@ import { useClassState } from '../../hooks/useClassState';
 import { supabase } from '../../lib/supabase';
 import { Card } from '../../components/ui/Card';
 import { Button } from '../../components/ui/Button';
-import { Play, Square, ExternalLink } from 'lucide-react';
+import { Play, Square, ExternalLink, ShieldCheck, Plus, LogIn } from 'lucide-react';
 
 const PHASES = [
     { id: 1, name: 'KWL giấy: K + W', targetDuration: 2 * 60 },
@@ -17,13 +17,27 @@ const PHASES = [
 ];
 
 export default function TeacherDashboard() {
-    const { classState, loading } = useClassState();
+    const [isAuthenticated, setIsAuthenticated] = useState(false);
+    const [inputPassword, setInputPassword] = useState('');
+    const [sessionCode, setSessionCode] = useState<string | null>(null);
+    const [joinInput, setJoinInput] = useState('');
+
+    const { classState, loading } = useClassState(sessionCode);
     const [activeTab, setActiveTab] = useState<'control' | 'preview'>('control');
     const [stats, setStats] = useState({ N: 0, E: 0, W: 0, S: 0 });
 
     useEffect(() => {
+        // Khôi phục session và auth
+        const auth = localStorage.getItem('lim_teacher_auth');
+        const sess = localStorage.getItem('lim_teacher_session');
+        if (auth === 'true') setIsAuthenticated(true);
+        if (sess) setSessionCode(sess);
+    }, []);
+
+    useEffect(() => {
+        if (!sessionCode) return;
         const fetchStats = async () => {
-            const { data } = await supabase.from('student_session').select('house');
+            const { data } = await supabase.from('student_session').select('house').eq('session_code', sessionCode);
             if (data) {
                 const newStats = { N: 0, E: 0, W: 0, S: 0 };
                 data.forEach((s: any) => {
@@ -37,43 +51,131 @@ export default function TeacherDashboard() {
 
         fetchStats();
 
-        const channel = supabase.channel('student_stats')
-            .on('postgres_changes', { event: '*', schema: 'public', table: 'student_session' }, fetchStats)
+        const channel = supabase.channel(`student_stats_${sessionCode}`)
+            .on('postgres_changes', { event: '*', schema: 'public', table: 'student_session', filter: `session_code=eq.${sessionCode}` }, fetchStats)
             .subscribe();
 
         return () => { supabase.removeChannel(channel); };
-    }, []);
+    }, [sessionCode]);
+
+    const handleLogin = (e: React.FormEvent) => {
+        e.preventDefault();
+        if (inputPassword === 'nshmadmin') {
+            setIsAuthenticated(true);
+            localStorage.setItem('lim_teacher_auth', 'true');
+        } else {
+            alert('Mật khẩu không đúng!');
+        }
+    };
+
+    const handleCreateSession = async () => {
+        const code = Math.floor(10000 + Math.random() * 90000).toString();
+        const { error } = await (supabase as any).from('class_state').insert([{ session_code: code }]);
+        if (error) {
+            alert('Lỗi tạo phòng: ' + error.message);
+        } else {
+            setSessionCode(code);
+            localStorage.setItem('lim_teacher_session', code);
+        }
+    };
+
+    const handleJoinSession = async (e: React.FormEvent) => {
+        e.preventDefault();
+        if (!joinInput) return;
+        const { data } = await supabase.from('class_state').select('session_code').eq('session_code', joinInput).single();
+        if (data) {
+            setSessionCode(joinInput);
+            localStorage.setItem('lim_teacher_session', joinInput);
+        } else {
+            alert('Mã phòng không tồn tại!');
+        }
+    };
+
+    if (!isAuthenticated) return (
+        <div className="container flex-center" style={{ minHeight: '100vh', padding: '24px' }}>
+            <Card style={{ maxWidth: '400px', width: '100%', textAlign: 'center' }}>
+                <ShieldCheck size={48} color="var(--primary)" style={{ margin: '0 auto 16px' }} />
+                <h2>Mật Khẩu Giáo Viên</h2>
+                <form onSubmit={handleLogin} className="flex-column gap-md" style={{ marginTop: '24px', textAlign: 'left' }}>
+                    <input
+                        type="password"
+                        value={inputPassword}
+                        onChange={e => setInputPassword(e.target.value)}
+                        placeholder="Nhập mật khẩu..."
+                        className="input-field"
+                        required
+                    />
+                    <Button type="submit">Đăng Nhập</Button>
+                </form>
+            </Card>
+        </div>
+    );
+
+    if (!sessionCode) return (
+        <div className="container flex-center" style={{ minHeight: '100vh', padding: '24px' }}>
+            <Card style={{ maxWidth: '500px', width: '100%', textAlign: 'center' }}>
+                <h2>Quản Lý Tiết Học</h2>
+                <div style={{ padding: '24px', background: 'rgba(255,255,255,0.05)', borderRadius: '12px', marginTop: '24px' }}>
+                    <Button onClick={handleCreateSession} className="flex-center gap-sm" style={{ width: '100%', padding: '16px', fontSize: '1.2rem' }}>
+                        <Plus /> TẠO TIẾT HỌC MỚI
+                    </Button>
+                    <p style={{ margin: '16px 0', opacity: 0.7 }}>Hoặc tiếp tục tiết học cũ bằng Mã PIN:</p>
+                    <form onSubmit={handleJoinSession} className="flex-column gap-sm">
+                        <input
+                            type="text"
+                            value={joinInput}
+                            onChange={e => setJoinInput(e.target.value)}
+                            placeholder="Nhập mã PIN 5 số..."
+                            className="input-field"
+                            maxLength={5}
+                            required
+                        />
+                        <Button type="submit" variant="secondary" className="flex-center gap-sm"><LogIn size={18} /> Vào phòng</Button>
+                    </form>
+                </div>
+            </Card>
+        </div>
+    );
 
     if (loading) return <div className="flex-center" style={{ minHeight: '100vh' }}>Đang tải...</div>;
 
     const currentPhase = classState?.phase || 1;
 
     const handleSetPhase = async (phaseId: number) => {
-        await (supabase as any).from('class_state').update({ phase: phaseId, timer_ends_at: null }).eq('id', 1);
+        await (supabase as any).from('class_state').update({ phase: phaseId, timer_ends_at: null }).eq('session_code', sessionCode);
     };
 
     const startTimer = async (minutes: number) => {
         const endsAt = new Date(Date.now() + minutes * 60000).toISOString();
-        await (supabase as any).from('class_state').update({ timer_ends_at: endsAt }).eq('id', 1);
+        await (supabase as any).from('class_state').update({ timer_ends_at: endsAt }).eq('session_code', sessionCode);
     };
 
     const stopTimer = async () => {
-        await (supabase as any).from('class_state').update({ timer_ends_at: null }).eq('id', 1);
+        await (supabase as any).from('class_state').update({ timer_ends_at: null }).eq('session_code', sessionCode);
     };
 
     const openTVWindow = () => {
-        window.open('/tv', 'LIM Synergy TV', 'width=1280,height=720,menubar=no,toolbar=no');
+        window.open(`/tv?session=${sessionCode}`, 'LIM Synergy TV', 'width=1280,height=720,menubar=no,toolbar=no');
     };
 
     return (
         <div className="container" style={{ padding: '24px 0' }}>
             <header className="glass-panel flex-column" style={{ marginBottom: '24px', alignItems: 'flex-start', gap: '16px' }}>
                 <div className="flex-between" style={{ width: '100%' }}>
-                    <h2>Bảng Điều Khiển Giáo Viên</h2>
-                    <Button onClick={openTVWindow} variant="secondary" className="flex-center gap-sm">
-                        <ExternalLink size={18} />
-                        Mở Màn Chiếu (/tv)
-                    </Button>
+                    <div>
+                        <h2>Bảng Điều Khiển Giáo Viên</h2>
+                        <h3 className="text-gradient" style={{ marginTop: '8px' }}>MÃ PIN: {sessionCode}</h3>
+                    </div>
+                    <div className="flex-center gap-md">
+                        <Button
+                            onClick={() => { setSessionCode(null); localStorage.removeItem('lim_teacher_session'); }}
+                            variant="secondary"
+                        >Đổi Phòng</Button>
+                        <Button onClick={openTVWindow} variant="secondary" className="flex-center gap-sm">
+                            <ExternalLink size={18} />
+                            Mở Màn Chiếu (/tv)
+                        </Button>
+                    </div>
                 </div>
                 {classState?.topic_prompt && (
                     <div style={{ background: 'rgba(255,255,255,0.05)', padding: '12px 16px', borderRadius: '8px', width: '100%' }}>

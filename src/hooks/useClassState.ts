@@ -6,17 +6,21 @@ import { Database } from '../lib/database.types';
 
 type ClassState = Database['public']['Tables']['class_state']['Row'];
 
-export function useClassState() {
+export function useClassState(sessionCode: string | null) {
     const [classState, setClassState] = useState<ClassState | null>(null);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         // Fetch initial state
         const fetchState = async () => {
+            if (!sessionCode) {
+                setLoading(false);
+                return;
+            }
             const { data, error } = await supabase
                 .from('class_state')
                 .select('*')
-                .eq('id', 1)
+                .eq('session_code', sessionCode)
                 .single();
 
             if (data) setClassState(data);
@@ -26,12 +30,14 @@ export function useClassState() {
 
         fetchState();
 
+        if (!sessionCode) return;
+
         // Subscribe to realtime changes
         const channel = supabase
-            .channel('class_state_changes')
+            .channel(`class_state_changes_${sessionCode}`)
             .on(
                 'postgres_changes',
-                { event: 'UPDATE', schema: 'public', table: 'class_state' },
+                { event: 'UPDATE', schema: 'public', table: 'class_state', filter: `session_code=eq.${sessionCode}` },
                 (payload) => {
                     console.log('Class state updated:', payload.new);
                     setClassState(payload.new as ClassState);
@@ -42,7 +48,7 @@ export function useClassState() {
         return () => {
             supabase.removeChannel(channel);
         };
-    }, []);
+    }, [sessionCode]);
 
     return { classState, loading };
 }
