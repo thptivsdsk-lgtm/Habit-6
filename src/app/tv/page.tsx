@@ -5,11 +5,45 @@ import { useClassState } from '../../hooks/useClassState';
 import { useHousesProgress } from '../../hooks/useHousesProgress';
 import { Card } from '../../components/ui/Card';
 import { Timer } from '../../components/ui/Timer';
+import { supabase } from '../../lib/supabase';
 
 export default function TvDisplay() {
     const { classState, loading } = useClassState();
     const { progress } = useHousesProgress();
     const [focusedHouse, setFocusedHouse] = React.useState<string | null>(null);
+    const [pollResponses, setPollResponses] = React.useState<any[]>([]);
+
+    React.useEffect(() => {
+        // Fetch existing polls
+        const fetchPolls = async () => {
+            const { data } = await (supabase as any).from('poll_responses').select('*');
+            if (data) setPollResponses(data);
+        };
+        fetchPolls();
+
+        // Listen for new polls via broadcast
+        const channel = supabase.channel('poll_updates_tv')
+            .on('broadcast', { event: 'poll_submit' }, (payload) => {
+                setPollResponses(prev => {
+                    const existing = prev.findIndex(p => p.student_id === payload.payload.uid);
+                    if (existing >= 0) {
+                        const newArr = [...prev];
+                        newArr[existing] = { ...prev[existing], ...payload.payload };
+                        return newArr;
+                    }
+                    return [...prev, { student_id: payload.payload.uid, ...payload.payload }];
+                });
+            })
+            // Listen for direct DB changes if they run the script
+            .on('postgres_changes', { event: '*', schema: 'public', table: 'poll_responses' }, (payload) => {
+                fetchPolls();
+            })
+            .subscribe();
+
+        return () => {
+            supabase.removeChannel(channel);
+        };
+    }, []);
 
     // Reset focused house if phase changes
     React.useEffect(() => {
@@ -78,14 +112,29 @@ export default function TvDisplay() {
                                 <p style={{ fontSize: '1.5rem', margin: '4px 0' }}>C. Em có thể chán nhưng vẫn ăn vì tiện</p>
                                 <p style={{ fontSize: '1.5rem', margin: '4px 0' }}>D. Em không chắc</p>
                             </Card>
-                            <Card className="text-left" style={{ padding: '32px' }}>
+                            <Card className="text-left" style={{ padding: '32px', display: 'flex', flexDirection: 'column' }}>
                                 <h3 style={{ color: 'var(--primary)', marginBottom: '16px' }}>Bước 2: Giải thích (20-30s)</h3>
                                 <p style={{ fontSize: '2rem', fontStyle: 'italic', opacity: 0.8 }}>“Vì sao em chọn đáp án đó? (1 câu)”</p>
-                                <div style={{ marginTop: '24px', padding: '16px', background: 'rgba(255,255,255,0.05)', borderRadius: '8px' }}>
-                                    <p style={{ fontSize: '1.2rem', color: 'var(--text-secondary)' }}>
-                                        (Bức tường ý kiến ẩn danh sẽ hiển thị ở đây...)
+                                <div style={{ marginTop: '24px', padding: '16px', background: 'rgba(255,255,255,0.05)', borderRadius: '8px', flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
+
+                                    <div style={{ flex: 1, overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: '12px', paddingRight: '12px', maxHeight: '300px' }}>
+                                        {pollResponses.length === 0 ? (
+                                            <p style={{ fontSize: '1.2rem', color: 'var(--text-secondary)' }}>
+                                                (Bức tường ý kiến ẩn danh sẽ hiển thị ở đây...)
+                                            </p>
+                                        ) : (
+                                            pollResponses.slice().reverse().map((resp, i) => (
+                                                <div key={i} style={{ background: 'rgba(255,255,255,0.1)', padding: '12px', borderRadius: '8px', borderLeft: `4px solid ${resp.choice === 'A' ? 'var(--house-n)' : resp.choice === 'B' ? 'var(--house-e)' : resp.choice === 'C' ? 'var(--house-s)' : 'var(--house-w)'}` }}>
+                                                    <span style={{ fontWeight: 'bold', marginRight: '8px', color: 'var(--text-secondary)' }}>Chọn {resp.choice}:</span>
+                                                    <span style={{ fontSize: '1.4rem' }}>{resp.reason}</span>
+                                                </div>
+                                            ))
+                                        )}
+                                    </div>
+
+                                    <p style={{ fontSize: '2rem', fontWeight: 'bold', marginTop: '16px', color: 'var(--success)', borderTop: '1px solid rgba(255,255,255,0.1)', paddingTop: '16px' }}>
+                                        Đã gửi: {pollResponses.length}/27
                                     </p>
-                                    <p style={{ fontSize: '2rem', fontWeight: 'bold', marginTop: '16px', color: 'var(--success)' }}>Đã gửi: 0/27</p>
                                 </div>
                             </Card>
                         </div>

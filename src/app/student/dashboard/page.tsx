@@ -1,11 +1,13 @@
 'use client';
 
-import React, { Suspense } from 'react';
+import React, { useState, useEffect, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { useClassState } from '../../../hooks/useClassState';
 import { Card } from '../../../components/ui/Card';
 import { Timer } from '../../../components/ui/Timer';
 import { GroupPhase } from '../../../components/phases/GroupPhase';
+import { Button } from '../../../components/ui/Button';
+import { supabase } from '../../../lib/supabase';
 
 function DashboardContent() {
     const searchParams = useSearchParams();
@@ -13,16 +15,71 @@ function DashboardContent() {
     const name = searchParams.get('name') || 'Học sinh';
     const rawUid = searchParams.get('uid');
 
-    const [uid, setUid] = React.useState(rawUid || '');
+    const [uid, setUid] = useState(rawUid || '');
 
-    React.useEffect(() => {
-        if (!uid) {
+    // Poll State
+    const [pollChoice, setPollChoice] = useState<string>('');
+    const [pollReason, setPollReason] = useState<string>('');
+    const [isPollSubmitting, setIsPollSubmitting] = useState(false);
+    const [pollSubmitted, setPollSubmitted] = useState(false);
+
+    useEffect(() => {
+        let currentUid = uid;
+        if (!currentUid) {
             const stored = localStorage.getItem('lim_session_id');
-            if (stored) setUid(stored);
+            if (stored) {
+                setUid(stored);
+                currentUid = stored;
+            }
+        }
+
+        if (currentUid) {
+            // Khôi phục trạng thái poll nếu có trong localStorage
+            const savedChoice = localStorage.getItem(`lim_poll_choice_${currentUid}`);
+            const savedReason = localStorage.getItem(`lim_poll_reason_${currentUid}`);
+            if (savedChoice) {
+                setPollChoice(savedChoice);
+                setPollReason(savedReason || '');
+                setPollSubmitted(true);
+            }
         }
     }, [uid]);
 
     const { classState, loading } = useClassState();
+
+    const handlePollSubmit = async () => {
+        if (!pollChoice || !pollReason.trim()) {
+            alert('Vui lòng chọn 1 đáp án và nhập 1 câu lý do!');
+            return;
+        }
+        setIsPollSubmitting(true);
+        try {
+            // Tạm thời lưu localStorage và bảng student_session nếu được
+            localStorage.setItem(`lim_poll_choice_${uid}`, pollChoice);
+            localStorage.setItem(`lim_poll_reason_${uid}`, pollReason);
+
+            // Emit event Realtime
+            await supabase.channel('poll_updates').send({
+                type: 'broadcast',
+                event: 'poll_submit',
+                payload: { uid, choice: pollChoice, reason: pollReason }
+            });
+
+            // Gọi API lưu bảng poll_responses (chờ user chạy SQL)
+            await (supabase as any).from('poll_responses').upsert({
+                student_id: uid,
+                choice: pollChoice,
+                reason: pollReason,
+                house: house
+            }, { onConflict: 'student_id' });
+
+            setPollSubmitted(true);
+        } catch (error) {
+            console.error(error);
+        } finally {
+            setIsPollSubmitting(false);
+        }
+    };
 
     if (loading) {
         return <div className="flex-center" style={{ minHeight: '100vh' }}>Đang tải trạng thái lớp học...</div>;
@@ -59,17 +116,56 @@ function DashboardContent() {
 
                 {phase === 2 && (
                     <Card className="text-center flex-column gap-md">
-                        <h3>Khởi động SEE: Poll</h3>
+                        <h3 style={{ color: 'var(--primary)' }}>Khởi động SEE: Poll</h3>
                         <p style={{ color: 'var(--text-secondary)' }}>“Nếu cả tháng ngày nào em cũng ăn món em thích nhất, em nghĩ điều gì sẽ xảy ra?”</p>
+
                         <div className="flex-column gap-sm" style={{ textAlign: 'left', marginTop: '12px' }}>
-                            <button className="btn-secondary" style={{ padding: '8px 16px', borderRadius: '8px', textAlign: 'left' }}>A. Em vẫn thích như cũ</button>
-                            <button className="btn-secondary" style={{ padding: '8px 16px', borderRadius: '8px', textAlign: 'left' }}>B. Em sẽ chán dần</button>
-                            <button className="btn-secondary" style={{ padding: '8px 16px', borderRadius: '8px', textAlign: 'left' }}>C. Em có thể chán nhưng vẫn ăn vì tiện</button>
-                            <button className="btn-secondary" style={{ padding: '8px 16px', borderRadius: '8px', textAlign: 'left' }}>D. Em không chắc</button>
+                            {['A', 'B', 'C', 'D'].map((opt, i) => {
+                                const texts = [
+                                    "A. Em vẫn thích như cũ",
+                                    "B. Em sẽ chán dần",
+                                    "C. Em có thể chán nhưng vẫn ăn vì tiện",
+                                    "D. Em không chắc"
+                                ];
+                                return (
+                                    <button
+                                        key={opt}
+                                        className={pollChoice === opt ? "btn-primary" : "btn-secondary"}
+                                        style={{
+                                            padding: '12px 16px',
+                                            borderRadius: '8px',
+                                            textAlign: 'left',
+                                            border: pollChoice === opt ? '2px solid var(--accent)' : '2px solid transparent',
+                                            transition: 'all 0.2s'
+                                        }}
+                                        onClick={() => !pollSubmitted && setPollChoice(opt)}
+                                        disabled={pollSubmitted}
+                                    >
+                                        {texts[i]}
+                                    </button>
+                                );
+                            })}
                         </div>
+
                         <p style={{ color: 'var(--text-secondary)', marginTop: '16px', textAlign: 'left' }}>Vì sao em chọn đáp án đó? (1 câu)</p>
-                        <textarea placeholder="Nhập lý do (ẩn danh)..." className="input-field" style={{ width: '100%', minHeight: '60px' }} />
-                        <button className="btn-primary" style={{ padding: '8px 16px', borderRadius: '8px', width: '100%' }}>Gửi bình chọn & Ý kiến</button>
+                        <textarea
+                            value={pollReason}
+                            onChange={(e) => setPollReason(e.target.value)}
+                            placeholder="Nhập lý do (ẩn danh)..."
+                            className="input-field"
+                            style={{ width: '100%', minHeight: '80px', fontSize: '1.2rem', padding: '12px' }}
+                            disabled={pollSubmitted}
+                        />
+
+                        {!pollSubmitted ? (
+                            <Button isLoading={isPollSubmitting} onClick={handlePollSubmit} className="btn-primary" style={{ padding: '12px 16px', borderRadius: '8px', width: '100%', fontSize: '1.2rem' }}>
+                                Gửi bình chọn & Ý kiến
+                            </Button>
+                        ) : (
+                            <div style={{ background: 'var(--success)', color: 'white', padding: '12px', borderRadius: '8px', fontWeight: 'bold' }}>
+                                ✅ Đã gửi thành công! (Chờ các bạn khác)
+                            </div>
+                        )}
                     </Card>
                 )}
 
