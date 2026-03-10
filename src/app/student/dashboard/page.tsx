@@ -53,14 +53,16 @@ function DashboardContent() {
                 {phase === 2 && (
                     <Card className="text-center flex-column gap-md">
                         <h3>2’–7’ Khởi động SEE: Poll</h3>
-                        <p style={{ color: 'var(--text-secondary)' }}>Món ăn yêu thích của bạn là gì?</p>
-                        <div className="flex-center gap-sm">
-                            <button className="btn-secondary" style={{ padding: '8px 16px', borderRadius: '8px' }}>A. Phở</button>
-                            <button className="btn-secondary" style={{ padding: '8px 16px', borderRadius: '8px' }}>B. Bún Bò</button>
-                            <button className="btn-secondary" style={{ padding: '8px 16px', borderRadius: '8px' }}>C. Hủ Tiếu</button>
+                        <p style={{ color: 'var(--text-secondary)' }}>“Nếu cả tháng ngày nào em cũng ăn món em thích nhất, em nghĩ điều gì sẽ xảy ra?”</p>
+                        <div className="flex-column gap-sm" style={{ textAlign: 'left', marginTop: '12px' }}>
+                            <button className="btn-secondary" style={{ padding: '8px 16px', borderRadius: '8px', textAlign: 'left' }}>A. Em vẫn thích như cũ</button>
+                            <button className="btn-secondary" style={{ padding: '8px 16px', borderRadius: '8px', textAlign: 'left' }}>B. Em sẽ chán dần</button>
+                            <button className="btn-secondary" style={{ padding: '8px 16px', borderRadius: '8px', textAlign: 'left' }}>C. Em có thể chán nhưng vẫn ăn vì tiện</button>
+                            <button className="btn-secondary" style={{ padding: '8px 16px', borderRadius: '8px', textAlign: 'left' }}>D. Em không chắc</button>
                         </div>
-                        <textarea placeholder="Nhập 1 câu lý do (ẩn danh)..." className="input-field" style={{ width: '100%', marginTop: '12px', minHeight: '60px' }} />
-                        <button className="btn-primary" style={{ padding: '8px 16px', borderRadius: '8px', width: '100%' }}>Gửi bình chọn</button>
+                        <p style={{ color: 'var(--text-secondary)', marginTop: '16px', textAlign: 'left' }}>Vì sao em chọn đáp án đó? (1 câu)</p>
+                        <textarea placeholder="Nhập lý do (ẩn danh)..." className="input-field" style={{ width: '100%', minHeight: '60px' }} />
+                        <button className="btn-primary" style={{ padding: '8px 16px', borderRadius: '8px', width: '100%' }}>Gửi bình chọn & Ý kiến</button>
                     </Card>
                 )}
 

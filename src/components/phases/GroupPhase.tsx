@@ -28,23 +28,29 @@ export function GroupPhase({ house, studentId }: GroupPhaseProps) {
     // Realtime Subscriptions
     useEffect(() => {
         const fetchData = async () => {
-            // Fetch roles
-            const { data: rData } = await supabase.from('role_assignments').select('*').eq('house', house);
-            if (rData) {
-                setRoleAssignments(rData);
-                const myRole = rData.find((r: any) => r.student_id === studentId);
-                if (myRole) setRole((myRole as any).role);
+            try {
+                // Fetch roles
+                const { data: rData } = await supabase.from('role_assignments').select('*').eq('house', house);
+                if (rData) {
+                    setRoleAssignments(rData);
+                    const myRole = rData.find((r: any) => r.student_id === studentId);
+                    if (myRole) setRole((myRole as any).role);
+                }
+
+                // Fetch product (might not exist yet, don't use .single() directly without error handling)
+                const { data: pData } = await supabase.from('group_product').select('*').eq('house', house).limit(1);
+                if (pData && pData.length > 0) {
+                    setGroupProduct(pData[0]);
+                }
+
+                // Fetch contributions
+                const { data: cData } = await supabase.from('contributions').select('*').eq('house', house);
+                if (cData) setContributions(cData);
+            } catch (err) {
+                console.error("Error fetching group data", err);
+            } finally {
+                setLoading(false);
             }
-
-            // Fetch product
-            const { data: pData } = await supabase.from('group_product').select('*').eq('house', house).single();
-            if (pData) setGroupProduct(pData);
-
-            // Fetch contributions
-            const { data: cData } = await supabase.from('contributions').select('*').eq('house', house);
-            if (cData) setContributions(cData);
-
-            setLoading(false);
         };
 
         fetchData();

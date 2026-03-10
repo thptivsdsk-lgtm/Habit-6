@@ -43,16 +43,30 @@ export default function TvDisplay() {
                     </div>
                 );
             case 2:
+                // 2'–7' Khởi động SEE: Poll
                 return (
-                    <div className="flex-column gap-xl text-center">
-                        <h1 style={{ fontSize: '4rem', color: 'var(--secondary)' }}>2’–7’ Khởi động SEE: Poll</h1>
-                        <h2 style={{ fontSize: '2.5rem' }}>Món ăn yêu thích của bạn là gì?</h2>
-                        <Card style={{ padding: '60px', marginTop: '40px' }}>
-                            <p style={{ fontSize: '2rem', color: 'var(--text-secondary)' }}>
-                                % lựa chọn + bức tường ý kiến sẽ hiển thị ở đây. (Đang cập nhật realtime)
-                            </p>
-                            <p style={{ fontSize: '2.5rem', fontWeight: 'bold', marginTop: '40px', color: 'var(--primary)' }}>Tiến độ: 0/27</p>
-                        </Card>
+                    <div className="flex-column gap-md text-center" style={{ maxWidth: '1400px', margin: '0 auto' }}>
+                        <h1 style={{ fontSize: '3rem', color: 'var(--secondary)' }}>Khởi động SEE: Poll Cảm Nhận</h1>
+                        <h2 style={{ fontSize: '2.5rem', lineHeight: '1.4' }}>“Nếu cả tháng ngày nào em cũng ăn món em thích nhất, <br />em nghĩ điều gì sẽ xảy ra?”</h2>
+                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '24px', marginTop: '24px', width: '100%' }}>
+                            <Card className="text-left" style={{ padding: '32px' }}>
+                                <h3 style={{ color: 'var(--warning)', marginBottom: '16px' }}>Bước 1: Chọn nhanh (15s)</h3>
+                                <p style={{ fontSize: '1.5rem', margin: '4px 0' }}>A. Em vẫn thích như cũ</p>
+                                <p style={{ fontSize: '1.5rem', margin: '4px 0' }}>B. Em sẽ chán dần</p>
+                                <p style={{ fontSize: '1.5rem', margin: '4px 0' }}>C. Em có thể chán nhưng vẫn ăn vì tiện</p>
+                                <p style={{ fontSize: '1.5rem', margin: '4px 0' }}>D. Em không chắc</p>
+                            </Card>
+                            <Card className="text-left" style={{ padding: '32px' }}>
+                                <h3 style={{ color: 'var(--primary)', marginBottom: '16px' }}>Bước 2: Giải thích (20-30s)</h3>
+                                <p style={{ fontSize: '2rem', fontStyle: 'italic', opacity: 0.8 }}>“Vì sao em chọn đáp án đó? (1 câu)”</p>
+                                <div style={{ marginTop: '24px', padding: '16px', background: 'rgba(255,255,255,0.05)', borderRadius: '8px' }}>
+                                    <p style={{ fontSize: '1.2rem', color: 'var(--text-secondary)' }}>
+                                        (Bức tường ý kiến ẩn danh sẽ hiển thị ở đây...)
+                                    </p>
+                                    <p style={{ fontSize: '2rem', fontWeight: 'bold', marginTop: '16px', color: 'var(--success)' }}>Đã gửi: 0/27</p>
+                                </div>
+                            </Card>
+                        </div>
                     </div>
                 );
             case 3:
