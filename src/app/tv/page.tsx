@@ -378,9 +378,6 @@ function TvDisplayContent() {
                                 <span style={{ fontSize: '2rem', paddingLeft: '24px', display: 'block' }}>✅ Tìm “điều hay/điểm mạnh” trong ý kiến khác</span>
                                 <span style={{ fontSize: '2rem', paddingLeft: '24px', display: 'block' }}>✅ Không cắt lời khi bạn đang nói</span>
                             </p>
-                            <div className="text-center" style={{ marginTop: '40px', fontSize: '2rem', color: 'var(--primary)', fontWeight: 'bold' }}>
-                                "Synergy không phải thắng–thua; là giải pháp mới giữ điều tốt của cả hai."
-                            </div>
                         </div>
                     </div>
                 );

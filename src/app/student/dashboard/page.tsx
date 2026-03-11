@@ -233,8 +233,7 @@ function DashboardContent() {
                             <strong>Cam kết 7 ngày</strong> (Chọn 1 hành vi bằng cách đánh dấu ✅):<br />
                             ⬜ “Mình hiểu ý bạn…” trước khi phản bác<br />
                             ⬜ Tìm “điều hay/điểm mạnh” trong ý kiến khác<br />
-                            ⬜ Không cắt lời khi bạn đang nói<br /><br />
-                            🌟 "Synergy không phải thắng–thua; là giải pháp mới giữ điều tốt của cả hai."
+                            ⬜ Không cắt lời khi bạn đang nói
                         </p>
                     </Card>
                 )}
