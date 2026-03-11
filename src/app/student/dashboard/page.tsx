@@ -109,7 +109,7 @@ function DashboardContent() {
                     <Card className="text-center">
                         <h3 style={{ color: 'var(--primary)', marginBottom: '16px' }}>K – Em đã biết/đã trải nghiệm gì?</h3>
                         <p style={{ color: 'var(--text-secondary)', marginTop: '12px', lineHeight: '1.6', fontSize: '1.1rem' }}>
-                            Vui lòng xem hướng dẫn trên <strong style={{ color: 'white' }}>Màn chiếu TV</strong> và hoàn thành phần K trên phiếu giấy của em.<br /><br />
+                            Vui lòng xem hướng dẫn chi tiết trên <strong style={{ color: 'white' }}>Màn chiếu TV</strong> và hoàn thành phần K trên phiếu giấy của em.<br /><br />
                             <span style={{ color: 'var(--warning)' }}>👉 Lưu ý: Trả lời thật ngắn gọn vào các câu K1, K2, K3 trong vòng 2 phút.</span>
                         </p>
                     </Card>

@@ -141,7 +141,7 @@ function TvDisplayContent() {
                         <div className="glass-card text-left" style={{ padding: '32px 40px', marginTop: '24px', fontSize: '1.8rem', lineHeight: '1.6' }}>
                             <div className="flex-column gap-md">
                                 <div>
-                                    <strong className="text-gradient">K1. Về “khác biệt” trong nhóm/lớp:</strong> <span style={{ fontSize: '1.4rem', opacity: 0.8 }}>(Khoanh 1 ý đúng với em nhất)</span>
+                                    <strong className="text-gradient">K1. Về “khác biệt” trong nhóm/lớp:</strong> <span style={{ fontSize: '1.4rem', opacity: 0.8 }}>(tick 1 ý đúng với em nhất)</span>
                                     <ul style={{ listStyleType: 'none', paddingLeft: '24px', margin: '12px 0 0 0', fontSize: '1.6rem' }}>
                                         <li>☐ Khác biệt thường làm khó làm việc cùng nhau</li>
                                         <li>☐ Khác biệt giúp nhóm mạnh hơn nếu biết cách</li>
