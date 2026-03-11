@@ -61,13 +61,6 @@ function DashboardContent() {
             localStorage.setItem(`lim_poll_choice_${uid}`, pollChoice);
             localStorage.setItem(`lim_poll_reason_${uid}`, pollReason);
 
-            // Emit event Realtime
-            await supabase.channel(`poll_updates_tv_${sessionCode}`).send({
-                type: 'broadcast',
-                event: 'poll_submit',
-                payload: { uid, choice: pollChoice, reason: pollReason }
-            });
-
             // Gọi API lưu bảng poll_responses (chờ user chạy SQL)
             await (supabase as any).from('poll_responses').upsert({
                 student_id: uid,
@@ -75,7 +68,7 @@ function DashboardContent() {
                 choice: pollChoice,
                 reason: pollReason,
                 house: house
-            }, { onConflict: 'student_id' });
+            }, { onConflict: 'session_code, student_id' });
 
             setPollSubmitted(true);
         } catch (error) {

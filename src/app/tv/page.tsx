@@ -42,20 +42,8 @@ function TvDisplayContent() {
         };
         fetchPolls();
 
-        // Listen for new polls via broadcast
+        // Listen for new polls via db changes
         const channel = supabase.channel(`poll_updates_tv_${sessionCode}`)
-            .on('broadcast', { event: 'poll_submit' }, (payload) => {
-                setPollResponses(prev => {
-                    const existing = prev.findIndex(p => p.student_id === payload.payload.uid);
-                    if (existing >= 0) {
-                        const newArr = [...prev];
-                        newArr[existing] = { ...prev[existing], ...payload.payload };
-                        return newArr;
-                    }
-                    return [...prev, { student_id: payload.payload.uid, ...payload.payload }];
-                });
-            })
-            // Listen for direct DB changes if they run the script
             .on('postgres_changes', { event: '*', schema: 'public', table: 'poll_responses', filter: `session_code=eq.${sessionCode}` }, (payload) => {
                 fetchPolls();
             })
