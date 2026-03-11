@@ -272,7 +272,7 @@ export default function TeacherDashboard() {
                 </div>
             ) : (
                 <Card style={{ padding: 0, overflow: 'hidden', height: '600px' }}>
-                    <iframe src="/tv" style={{ width: '100%', height: '100%', border: 'none' }} title="TV Preview" />
+                    <iframe src={`/tv?session=${sessionCode}`} style={{ width: '100%', height: '100%', border: 'none' }} title="TV Preview" />
                 </Card>
             )}
         </div>

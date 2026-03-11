@@ -1,3 +1,11 @@
+-- Xoá các bảng cũ (NẾU CÓ) để đảm bảo cập nhật cấu trúc mới thành công
+DROP TABLE IF EXISTS poll_responses CASCADE;
+DROP TABLE IF EXISTS group_product CASCADE;
+DROP TABLE IF EXISTS contributions CASCADE;
+DROP TABLE IF EXISTS role_assignments CASCADE;
+DROP TABLE IF EXISTS student_session CASCADE;
+DROP TABLE IF EXISTS class_state CASCADE;
+
 -- 1. `class_state` table: Lưu trạng thái tổng thể của tiết học (session)
 CREATE TABLE class_state (
     session_code TEXT PRIMARY KEY,
