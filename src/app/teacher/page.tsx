@@ -10,10 +10,11 @@ import { Play, Square, ExternalLink, ShieldCheck, Plus, LogIn } from 'lucide-rea
 const PHASES = [
     { id: 1, name: 'KWL giấy: K + W', targetDuration: 2 * 60 },
     { id: 2, name: 'Khởi động SEE: Poll', targetDuration: 5 * 60 },
-    { id: 3, name: 'Trò SYNERGY (Yes, And)', targetDuration: 2 * 60 },
-    { id: 4, name: 'Làm nhóm DO (Tạo Ý 3)', targetDuration: 12 * 60 },
-    { id: 5, name: 'Thuyết trình GET', targetDuration: 14 * 60 },
-    { id: 6, name: 'KWL giấy: L + cam kết', targetDuration: 5 * 60 },
+    { id: 3, name: 'Làm nhóm DO (Tạo Ý 3)', targetDuration: 14 * 60 },
+    { id: 4, name: 'Thuyết trình GET', targetDuration: 10 * 60 },
+    { id: 5, name: 'Tuyên ngôn doanh nghiệp', targetDuration: 5 * 60 },
+    { id: 6, name: 'Kết luận', targetDuration: 1 * 60 },
+    { id: 7, name: 'KWL giấy: L + cam kết', targetDuration: 3 * 60 },
 ];
 
 export default function TeacherDashboard() {
@@ -238,11 +239,12 @@ export default function TeacherDashboard() {
 
                             <div className="flex-column gap-md">
                                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px' }}>
-                                    <Button variant="secondary" onClick={() => startTimer(2)} className="flex-center gap-sm"><Play size={16} /> Bắt đầu A 2:00</Button>
-                                    <Button variant="secondary" onClick={() => startTimer(2)} className="flex-center gap-sm"><Play size={16} /> Bắt đầu B 2:00</Button>
-                                    <Button variant="secondary" onClick={() => startTimer(2)} className="flex-center gap-sm"><Play size={16} /> Bắt đầu C 2:00</Button>
-                                    <Button variant="secondary" onClick={() => startTimer(4)} className="flex-center gap-sm"><Play size={16} /> Bắt đầu Ý3 4:00</Button>
-                                    <Button variant="secondary" onClick={() => startTimer(2)} className="flex-center gap-sm" style={{ gridColumn: 'span 2' }}><Play size={16} /> Bắt đầu Chốt 2:00</Button>
+                                    <Button variant="secondary" onClick={() => startTimer(1)} className="flex-center gap-sm"><Play size={16} /> Bắt đầu 1 Phút</Button>
+                                    <Button variant="secondary" onClick={() => startTimer(2)} className="flex-center gap-sm"><Play size={16} /> Bắt đầu 2 Phút</Button>
+                                    <Button variant="secondary" onClick={() => startTimer(4)} className="flex-center gap-sm"><Play size={16} /> Bắt đầu 4 Phút</Button>
+                                    <Button variant="secondary" onClick={() => startTimer(5)} className="flex-center gap-sm"><Play size={16} /> Bắt đầu 5 Phút</Button>
+                                    <Button variant="secondary" onClick={() => startTimer(11)} className="flex-center gap-sm"><Play size={16} /> Bắt đầu 11 Phút (Nhóm)</Button>
+                                    <Button variant="secondary" onClick={() => startTimer(10)} className="flex-center gap-sm"><Play size={16} /> Bắt đầu 10 Phút (Thuyết trình)</Button>
                                 </div>
 
                                 <hr style={{ borderColor: 'var(--surface-border)', opacity: 0.5 }} />

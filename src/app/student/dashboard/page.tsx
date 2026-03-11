@@ -170,19 +170,9 @@ function DashboardContent() {
                     </Card>
                 )}
 
-                {phase === 3 && (
-                    <Card className="text-center flex-column gap-md">
-                        <h3>Trò chơi Synergy</h3>
-                        <div style={{ background: 'rgba(255,255,255,0.05)', padding: '16px', borderRadius: '8px', textAlign: 'left' }}>
-                            <p style={{ color: 'var(--warning)', fontWeight: 'bold', marginBottom: '8px' }}>⚠️ Không nhập web. Chỉ nói theo mẫu.</p>
-                            <p style={{ lineHeight: '1.5' }}>Mỗi nhà chọn nhanh 2 bạn đứng tại chỗ:</p>
-                            <p style={{ lineHeight: '1.5' }}>- Bạn 1: <strong>"Mình hiểu ý bạn, và mình đề nghị..."</strong></p>
-                            <p style={{ lineHeight: '1.5' }}>- Bạn 2: <strong>"Mình lo rằng..., và mình đề nghị..."</strong></p>
-                        </div>
-                    </Card>
-                )}
 
-                {phase === 4 && (
+
+                {phase === 3 && (
                     <Card>
                         <h3 className="text-center" style={{ marginBottom: '24px' }}>Làm nhóm DO (Tạo Ý 3)</h3>
                         <div className="flex-center gap-md text-center flex-column" style={{ marginBottom: '24px' }}>
@@ -199,7 +189,7 @@ function DashboardContent() {
                     </Card>
                 )}
 
-                {phase === 5 && (
+                {phase === 4 && (
                     <Card className="text-center">
                         <h3>Thuyết trình GET</h3>
                         <p style={{ color: 'var(--text-secondary)', marginTop: '12px', lineHeight: '1.6', textAlign: 'left', display: 'inline-block' }}>
@@ -213,7 +203,25 @@ function DashboardContent() {
                     </Card>
                 )}
 
+                {phase === 5 && (
+                    <Card className="text-center">
+                        <h3>Tuyên ngôn Doanh nghiệp</h3>
+                        <p style={{ color: 'var(--text-secondary)', marginTop: '12px', lineHeight: '1.6' }}>
+                            (Mời các bạn hướng lên màn hình TV lớn)
+                        </p>
+                    </Card>
+                )}
+
                 {phase === 6 && (
+                    <Card className="text-center">
+                        <h3>Kết Luận</h3>
+                        <p style={{ color: 'var(--text-secondary)', marginTop: '12px', lineHeight: '1.6' }}>
+                            (Mời các bạn hướng lên màn hình TV lớn)
+                        </p>
+                    </Card>
+                )}
+
+                {phase === 7 && (
                     <Card className="text-center">
                         <h3>KWL giấy: L + cam kết</h3>
                         <p style={{ color: 'var(--text-secondary)', marginTop: '12px', lineHeight: '1.6' }}>
