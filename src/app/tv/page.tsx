@@ -282,7 +282,7 @@ function TvDisplayContent() {
                     <div className="flex-center flex-column gap-xl text-center" style={{ minHeight: '600px' }}>
                         <h1 style={{ fontSize: '4.5rem', color: 'var(--primary)', marginBottom: '40px' }}>Tuyên ngôn Doanh nghiệp</h1>
                         <div className="glass-card text-left flex-column" style={{ padding: '60px', maxWidth: '1200px', lineHeight: '1.8' }}>
-                            <p style={{ fontSize: '2.5rem', color: 'var(--text-secondary)' }}><em>“Chúng tôi tin rằng sự đa dạng mang lại những giải pháp tốt nhất. Khi những con người với xuất thân, kinh nghiệm và góc nhìn khác nhau cùng làm việc, đó là lúc những sáng kiến vĩ đại ra đời.”</em></p>
+                            <p style={{ fontSize: '2.5rem', color: 'var(--text-secondary)' }}><em>“Mỗi chúng ta đều có những ý kiến mà không ai khác có. Mỗi chúng ta đều khác biệt theo cách riêng của mình. Giống như các doanh nghiệp; nếu chúng ta bắt đầu nhìn nhận sự khác biệt như một sức mạnh thay vì là một điểm yếu, chúng ta sẽ mở ra cánh cửa cho những ý tưởng mà lúc này chúng ta chỉ có thể tưởng tượng ra.”</em></p>
                         </div>
                         {classState?.timer_ends_at && (
                             <div className="flex-center" style={{ marginTop: '20px', padding: '16px', background: 'rgba(255,255,255,0.05)', borderRadius: '12px' }}>
