@@ -230,10 +230,11 @@ function DashboardContent() {
                             - Khác biệt làm nhóm mạnh hơn thế nào?<br />
                             - 1+1=3 nghĩa là gì? (kèm 1 minh chứng từ nhóm em)<br />
                             - Vì sao doanh nghiệp đề cao đa dạng?<br /><br />
-                            <strong>Cam kết 7 ngày</strong> (Chọn 1 hành vi bằng cách đánh dấu ✅):<br />
+                            <strong>Cam kết 7 ngày</strong>:<br />
                             ⬜ “Mình hiểu ý bạn…” trước khi phản bác<br />
                             ⬜ Tìm “điều hay/điểm mạnh” trong ý kiến khác<br />
-                            ⬜ Không cắt lời khi bạn đang nói
+                            ⬜ Không cắt lời khi bạn đang nói<br />
+                            ⬜ Công nhận điểm mạnh của người khác.
                         </p>
                     </Card>
                 )}

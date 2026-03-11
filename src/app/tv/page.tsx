@@ -373,10 +373,11 @@ function TvDisplayContent() {
                                 <span style={{ fontSize: '2rem', paddingLeft: '24px', display: 'block' }}>- Vì sao doanh nghiệp đề cao đa dạng?</span>
                             </p>
                             <p style={{ fontSize: '2.5rem', marginBottom: '24px', lineHeight: '1.5' }}>
-                                <strong>Cam kết 7 ngày (tick 1):</strong> <br />
+                                <strong>Cam kết 7 ngày:</strong> <br />
                                 <span style={{ fontSize: '2rem', paddingLeft: '24px', display: 'block' }}>✅ “Mình hiểu ý bạn…” trước khi phản bác</span>
                                 <span style={{ fontSize: '2rem', paddingLeft: '24px', display: 'block' }}>✅ Tìm “điều hay/điểm mạnh” trong ý kiến khác</span>
                                 <span style={{ fontSize: '2rem', paddingLeft: '24px', display: 'block' }}>✅ Không cắt lời khi bạn đang nói</span>
+                                <span style={{ fontSize: '2rem', paddingLeft: '24px', display: 'block' }}>✅ Công nhận điểm mạnh của người khác.</span>
                             </p>
                         </div>
                     </div>
