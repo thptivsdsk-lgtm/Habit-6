@@ -366,11 +366,17 @@ function TvDisplayContent() {
                     <div className="flex-center flex-column gap-xl text-center">
                         <h1 style={{ fontSize: '4rem', color: 'var(--success)' }}>KWL giấy: L + cam kết</h1>
                         <div className="glass-card flex-column" style={{ padding: '60px', maxWidth: '1200px', textAlign: 'left' }}>
-                            <p style={{ fontSize: '2.5rem', marginBottom: '40px', lineHeight: '1.5' }}>
-                                <strong>L (Learned)</strong>: Em học được gì về 1+1=3? <span style={{ opacity: 0.8 }}>(1–2 dòng)</span>
+                            <p style={{ fontSize: '2.5rem', marginBottom: '24px', lineHeight: '1.5' }}>
+                                <strong>L (Learned)</strong>: Em học được gì về: <br />
+                                <span style={{ fontSize: '2rem', paddingLeft: '24px', display: 'block' }}>- Khác biệt làm nhóm mạnh hơn thế nào?</span>
+                                <span style={{ fontSize: '2rem', paddingLeft: '24px', display: 'block' }}>- 1+1=3 nghĩa là gì? (kèm 1 minh chứng từ nhóm em)</span>
+                                <span style={{ fontSize: '2rem', paddingLeft: '24px', display: 'block' }}>- Vì sao doanh nghiệp đề cao đa dạng?</span>
                             </p>
                             <p style={{ fontSize: '2.5rem', marginBottom: '24px', lineHeight: '1.5' }}>
-                                <strong>Cam kết 7 ngày</strong>: Chọn 1 hành vi (đánh dấu tick ✅)
+                                <strong>Cam kết 7 ngày (tick 1):</strong> <br />
+                                <span style={{ fontSize: '2rem', paddingLeft: '24px', display: 'block' }}>✅ “Mình hiểu ý bạn…” trước khi phản bác</span>
+                                <span style={{ fontSize: '2rem', paddingLeft: '24px', display: 'block' }}>✅ Tìm “điều hay/điểm mạnh” trong ý kiến khác</span>
+                                <span style={{ fontSize: '2rem', paddingLeft: '24px', display: 'block' }}>✅ Không cắt lời khi bạn đang nói</span>
                             </p>
                             <div className="text-center" style={{ marginTop: '40px', fontSize: '2rem', color: 'var(--primary)', fontWeight: 'bold' }}>
                                 "Synergy không phải thắng–thua; là giải pháp mới giữ điều tốt của cả hai."

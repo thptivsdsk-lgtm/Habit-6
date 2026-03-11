@@ -225,9 +225,15 @@ function DashboardContent() {
                     <Card className="text-center">
                         <h3>KWL giấy: L + cam kết</h3>
                         <p style={{ color: 'var(--text-secondary)', marginTop: '12px', lineHeight: '1.6' }}>
-                            Vui lòng ghi vào phần cuối của phiếu giấy:<br />
-                            - <strong>L (Learned)</strong>: Em học được gì về 1+1=3? (1-2 dòng)<br />
-                            - <strong>Cam kết 7 ngày</strong>: Chọn 1 hành vi (đánh dấu tick ✅)<br /><br />
+                            Vui lòng ghi vào phần cuối của phiếu giấy KWL:<br /><br />
+                            <strong>L (Learned)</strong>: Tóm tắt thật ngắn (1-2 dòng) về:<br />
+                            - Khác biệt làm nhóm mạnh hơn thế nào?<br />
+                            - 1+1=3 nghĩa là gì? (kèm 1 minh chứng từ nhóm em)<br />
+                            - Vì sao doanh nghiệp đề cao đa dạng?<br /><br />
+                            <strong>Cam kết 7 ngày</strong> (Chọn 1 hành vi bằng cách đánh dấu ✅):<br />
+                            ⬜ “Mình hiểu ý bạn…” trước khi phản bác<br />
+                            ⬜ Tìm “điều hay/điểm mạnh” trong ý kiến khác<br />
+                            ⬜ Không cắt lời khi bạn đang nói<br /><br />
                             🌟 "Synergy không phải thắng–thua; là giải pháp mới giữ điều tốt của cả hai."
                         </p>
                     </Card>
