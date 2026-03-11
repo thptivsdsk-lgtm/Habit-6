@@ -12,7 +12,7 @@ const PHASES = [
     { id: 2, name: 'Khởi động SEE: Poll', targetDuration: 5 * 60 },
     { id: 3, name: 'Làm nhóm DO (Tạo Ý 3)', targetDuration: 14 * 60 },
     { id: 4, name: 'Thuyết trình GET', targetDuration: 10 * 60 },
-    { id: 5, name: 'Tuyên ngôn doanh nghiệp', targetDuration: 5 * 60 },
+    { id: 5, name: 'Tuyên bố Doanh nghiệp', targetDuration: 5 * 60 },
     { id: 6, name: 'Kết luận', targetDuration: 1 * 60 },
     { id: 7, name: 'KWL giấy: L + cam kết', targetDuration: 3 * 60 },
 ];

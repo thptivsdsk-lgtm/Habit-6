@@ -205,7 +205,7 @@ function DashboardContent() {
 
                 {phase === 5 && (
                     <Card className="text-center">
-                        <h3>Tuyên ngôn Doanh nghiệp</h3>
+                        <h3>TUYÊN BỐ CỦA MỘT SỐ DOANH NGHIỆP</h3>
                         <p style={{ color: 'var(--text-secondary)', marginTop: '12px', lineHeight: '1.6' }}>
                             (Mời các bạn hướng lên màn hình TV lớn)
                         </p>

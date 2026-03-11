@@ -280,9 +280,9 @@ function TvDisplayContent() {
             case 5:
                 return (
                     <div className="flex-center flex-column gap-xl text-center" style={{ minHeight: '600px' }}>
-                        <h1 style={{ fontSize: '4.5rem', color: 'var(--primary)', marginBottom: '40px' }}>Tuyên ngôn Doanh nghiệp</h1>
+                        <h1 style={{ fontSize: '4.5rem', color: 'var(--primary)', marginBottom: '40px', textTransform: 'uppercase' }}>TUYÊN BỐ CỦA MỘT SỐ DOANH NGHIỆP</h1>
                         <div className="glass-card text-left flex-column" style={{ padding: '60px', maxWidth: '1200px', lineHeight: '1.8' }}>
-                            <p style={{ fontSize: '2.5rem', color: 'var(--text-secondary)' }}><em>“Mỗi chúng ta đều có những ý kiến mà không ai khác có. Mỗi chúng ta đều khác biệt theo cách riêng của mình. Giống như các doanh nghiệp; nếu chúng ta bắt đầu nhìn nhận sự khác biệt như một sức mạnh thay vì là một điểm yếu, chúng ta sẽ mở ra cánh cửa cho những ý tưởng mà lúc này chúng ta chỉ có thể tưởng tượng ra.”</em></p>
+                            <p style={{ fontSize: '2.5rem', color: 'var(--text-secondary)' }}><em>“NHIỀU CÔNG TY TUYÊN BỐ ĐỀ CAO SỰ KHÁC BIỆT NHƯ TRONG VÍ DỤ DƯỚI ĐÂY: CHÚNG TÔI TIN TƯỞNG VÀO VIỆC TĂNG CƯỜNG VĂN HÓA TÔN VINH SỰ KHÁC BIỆT. ĐA DẠNG LÀ YẾU TỐ SỐNG CÒN TRONG THÀNH CÔNG CỦA CHÚNG TÔI. CHÚNG TÔI KHUYẾN KHÍCH MỌI NHÂN VIÊN ĐÓNG GÓP, SÁNG TẠO VÀ ĐỔI MỚI TRÊN CƠ SỞ TÀI NĂNG, KINH NGHIỆM VÀ KỸ NĂNG CỦA HỌ ĐỂ ĐẠT ĐƯỢC CÁC GIẢI PHÁP CÙNG THẮNG.”</em></p>
                         </div>
                         {classState?.timer_ends_at && (
                             <div className="flex-center" style={{ marginTop: '20px', padding: '16px', background: 'rgba(255,255,255,0.05)', borderRadius: '12px' }}>
