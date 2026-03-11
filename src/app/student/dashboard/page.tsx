@@ -36,17 +36,21 @@ function DashboardContent() {
             }
         }
 
-        if (currentUid) {
+        if (currentUid && sessionCode) {
             // Khôi phục trạng thái poll nếu có trong localStorage
-            const savedChoice = localStorage.getItem(`lim_poll_choice_${currentUid}`);
-            const savedReason = localStorage.getItem(`lim_poll_reason_${currentUid}`);
+            const savedChoice = localStorage.getItem(`lim_poll_choice_${sessionCode}_${currentUid}`);
+            const savedReason = localStorage.getItem(`lim_poll_reason_${sessionCode}_${currentUid}`);
             if (savedChoice) {
                 setPollChoice(savedChoice);
                 setPollReason(savedReason || '');
                 setPollSubmitted(true);
+            } else {
+                setPollChoice('');
+                setPollReason('');
+                setPollSubmitted(false);
             }
         }
-    }, [uid]);
+    }, [uid, sessionCode]);
 
     const { classState, loading } = useClassState(sessionCode);
 
@@ -58,8 +62,8 @@ function DashboardContent() {
         setIsPollSubmitting(true);
         try {
             // Tạm thời lưu localStorage và bảng student_session nếu được
-            localStorage.setItem(`lim_poll_choice_${uid}`, pollChoice);
-            localStorage.setItem(`lim_poll_reason_${uid}`, pollReason);
+            localStorage.setItem(`lim_poll_choice_${sessionCode}_${uid}`, pollChoice);
+            localStorage.setItem(`lim_poll_reason_${sessionCode}_${uid}`, pollReason);
 
             // Gọi API lưu bảng poll_responses (chờ user chạy SQL)
             await (supabase as any).from('poll_responses').upsert({

@@ -70,20 +70,20 @@ export function GroupPhase({ sessionCode, house, studentId }: GroupPhaseProps) {
 
     // Restore drafts
     useEffect(() => {
-        if (role) {
-            setInputA(localStorage.getItem(`lim_draft_${house}_A`) || '');
-            setInputB(localStorage.getItem(`lim_draft_${house}_B`) || '');
-            setInputCGold(localStorage.getItem(`lim_draft_${house}_CGold`) || '');
-            setInputCY3(localStorage.getItem(`lim_draft_${house}_CY3`) || '');
-            setInputDWhy(localStorage.getItem(`lim_draft_${house}_DWhy`) || '');
+        if (role && sessionCode) {
+            setInputA(localStorage.getItem(`lim_draft_${sessionCode}_${house}_A`) || '');
+            setInputB(localStorage.getItem(`lim_draft_${sessionCode}_${house}_B`) || '');
+            setInputCGold(localStorage.getItem(`lim_draft_${sessionCode}_${house}_CGold`) || '');
+            setInputCY3(localStorage.getItem(`lim_draft_${sessionCode}_${house}_CY3`) || '');
+            setInputDWhy(localStorage.getItem(`lim_draft_${sessionCode}_${house}_DWhy`) || '');
         }
-    }, [role, house]);
+    }, [role, house, sessionCode]);
 
     // Save drafts
-    useEffect(() => { if (role === 'A') localStorage.setItem(`lim_draft_${house}_A`, inputA); }, [inputA, role, house]);
-    useEffect(() => { if (role === 'B') localStorage.setItem(`lim_draft_${house}_B`, inputB); }, [inputB, role, house]);
-    useEffect(() => { if (role === 'C') { localStorage.setItem(`lim_draft_${house}_CGold`, inputCGold); localStorage.setItem(`lim_draft_${house}_CY3`, inputCY3); } }, [inputCGold, inputCY3, role, house]);
-    useEffect(() => { if (role === 'D') localStorage.setItem(`lim_draft_${house}_DWhy`, inputDWhy); }, [inputDWhy, role, house]);
+    useEffect(() => { if (role === 'A') localStorage.setItem(`lim_draft_${sessionCode}_${house}_A`, inputA); }, [inputA, role, house, sessionCode]);
+    useEffect(() => { if (role === 'B') localStorage.setItem(`lim_draft_${sessionCode}_${house}_B`, inputB); }, [inputB, role, house, sessionCode]);
+    useEffect(() => { if (role === 'C') { localStorage.setItem(`lim_draft_${sessionCode}_${house}_CGold`, inputCGold); localStorage.setItem(`lim_draft_${sessionCode}_${house}_CY3`, inputCY3); } }, [inputCGold, inputCY3, role, house, sessionCode]);
+    useEffect(() => { if (role === 'D') localStorage.setItem(`lim_draft_${sessionCode}_${house}_DWhy`, inputDWhy); }, [inputDWhy, role, house, sessionCode]);
 
     const handleSelectRole = async (selectedRole: 'A' | 'B' | 'C' | 'D') => {
         setLoading(true);
@@ -103,7 +103,7 @@ export function GroupPhase({ sessionCode, house, studentId }: GroupPhaseProps) {
 
         setLoading(false);
         alert('Đã gửi ý kiến thành công!');
-        localStorage.removeItem(`lim_draft_${house}_${role}`);
+        localStorage.removeItem(`lim_draft_${sessionCode}_${house}_${role}`);
     };
 
     const updateProduct = async (updates: any) => {
@@ -120,15 +120,15 @@ export function GroupPhase({ sessionCode, house, studentId }: GroupPhaseProps) {
         if (!inputCGold.trim() || !inputCY3.trim()) return;
         await updateProduct({ gold1: inputCGold, y3: inputCY3 });
         alert('Đã gửi phần việc của C thành công!');
-        localStorage.removeItem(`lim_draft_${house}_CGold`);
-        localStorage.removeItem(`lim_draft_${house}_CY3`);
+        localStorage.removeItem(`lim_draft_${sessionCode}_${house}_CGold`);
+        localStorage.removeItem(`lim_draft_${sessionCode}_${house}_CY3`);
     };
 
     const submitD = async () => {
         if (!inputDWhy.trim()) return;
         await updateProduct({ why: inputDWhy, status: 'submitted' });
         alert('Đã chốt nhóm và nộp bài thành công!');
-        localStorage.removeItem(`lim_draft_${house}_DWhy`);
+        localStorage.removeItem(`lim_draft_${sessionCode}_${house}_DWhy`);
     };
 
     if (loading) return <div>Đang tải dữ liệu nhóm...</div>;
