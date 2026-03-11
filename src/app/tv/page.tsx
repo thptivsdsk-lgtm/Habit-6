@@ -135,32 +135,63 @@ function TvDisplayContent() {
         switch (phase) {
             case 1:
                 return (
-                    <div className="flex-column gap-xl text-center" style={{ maxWidth: '1200px', margin: '0 auto' }}>
-                        <h1 style={{ fontSize: '3.5rem', color: 'var(--primary)', marginBottom: '16px' }}>K – Em đã biết/đã trải nghiệm gì?</h1>
+                    <div className="flex-column gap-xl text-center" style={{ width: '100%', maxWidth: '1600px', margin: '0 auto' }}>
+                        <h1 style={{ fontSize: '3.5rem', color: 'var(--primary)', marginBottom: '16px' }}>K + W – Kiến thức & Mong muốn</h1>
                         <p style={{ fontSize: '2rem', color: 'var(--warning)', fontWeight: 'bold' }}>GV: Theo dõi thời gian (2 phút)</p>
-                        <div className="glass-card text-left" style={{ padding: '32px 40px', marginTop: '24px', fontSize: '1.8rem', lineHeight: '1.6' }}>
-                            <div className="flex-column gap-md">
-                                <div>
-                                    <strong className="text-gradient">K1. Về “khác biệt” trong nhóm/lớp:</strong> <span style={{ fontSize: '1.4rem', opacity: 0.8 }}>(tick 1 ý đúng với em nhất)</span>
-                                    <ul style={{ listStyleType: 'none', paddingLeft: '24px', margin: '12px 0 0 0', fontSize: '1.6rem' }}>
-                                        <li>☐ Khác biệt thường làm khó làm việc cùng nhau</li>
-                                        <li>☐ Khác biệt giúp nhóm mạnh hơn nếu biết cách</li>
-                                        <li>☐ Em chưa rõ khác biệt giúp hay hại</li>
-                                    </ul>
+
+                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '32px', textAlign: 'left', marginTop: '24px' }}>
+                            {/* K section */}
+                            <div className="glass-card flex-column" style={{ padding: '32px 40px', fontSize: '1.8rem', lineHeight: '1.6' }}>
+                                <h2 style={{ color: 'var(--secondary)', marginBottom: '24px', fontSize: '2.5rem', borderBottom: '2px solid rgba(255,255,255,0.1)', paddingBottom: '12px' }}>Phần K (Em đã biết gì?)</h2>
+                                <div className="flex-column gap-md">
+                                    <div>
+                                        <strong className="text-gradient">K1. Về “khác biệt” trong nhóm/lớp:</strong> <span style={{ fontSize: '1.4rem', opacity: 0.8 }}>(tick 1 ý đúng với em nhất)</span>
+                                        <ul style={{ listStyleType: 'none', paddingLeft: '24px', margin: '12px 0 0 0', fontSize: '1.6rem' }}>
+                                            <li>☐ Khác biệt thường làm khó làm việc cùng nhau</li>
+                                            <li>☐ Khác biệt giúp nhóm mạnh hơn nếu biết cách</li>
+                                            <li>☐ Em chưa rõ khác biệt giúp hay hại</li>
+                                        </ul>
+                                    </div>
+                                    <hr style={{ borderColor: 'var(--surface-border)', margin: '12px 0', opacity: 0.5 }} />
+                                    <div>
+                                        <strong className="text-gradient">K2. Em từng thấy “cùng nhau tốt hơn” trong tình huống nào?</strong> <span style={{ fontSize: '1.4rem', opacity: 0.8 }}>(viết 1 ví dụ thật ngắn)</span>
+                                        <p style={{ margin: '12px 0 0 24px', fontSize: '1.6rem' }}>Ví dụ: ________________________________________________________</p>
+                                    </div>
+                                    <hr style={{ borderColor: 'var(--surface-border)', margin: '12px 0', opacity: 0.5 }} />
+                                    <div>
+                                        <strong className="text-gradient">K3. Khi có ý kiến trái nhau, nhóm thường…</strong> <span style={{ fontSize: '1.4rem', opacity: 0.8 }}>(tick 1)</span>
+                                        <div style={{ display: 'flex', gap: '32px', margin: '12px 0 0 24px', fontSize: '1.6rem' }}>
+                                            <span>☐ cãi nhau</span>
+                                            <span>☐ im lặng</span>
+                                            <span>☐ mỗi người một ý</span>
+                                            <span>☐ tìm cách kết hợp</span>
+                                        </div>
+                                    </div>
                                 </div>
-                                <hr style={{ borderColor: 'var(--surface-border)', margin: '12px 0', opacity: 0.5 }} />
-                                <div>
-                                    <strong className="text-gradient">K2. Em từng thấy “cùng nhau tốt hơn” trong tình huống nào?</strong> <span style={{ fontSize: '1.4rem', opacity: 0.8 }}>(viết 1 ví dụ thật ngắn)</span>
-                                    <p style={{ margin: '12px 0 0 24px', fontSize: '1.6rem' }}>Ví dụ: ________________________________________________________</p>
-                                </div>
-                                <hr style={{ borderColor: 'var(--surface-border)', margin: '12px 0', opacity: 0.5 }} />
-                                <div>
-                                    <strong className="text-gradient">K3. Khi có ý kiến trái nhau, nhóm thường…</strong> <span style={{ fontSize: '1.4rem', opacity: 0.8 }}>(tick 1)</span>
-                                    <div style={{ display: 'flex', gap: '32px', margin: '12px 0 0 24px', fontSize: '1.6rem' }}>
-                                        <span>☐ cãi nhau</span>
-                                        <span>☐ im lặng</span>
-                                        <span>☐ mỗi người một ý</span>
-                                        <span>☐ tìm cách kết hợp</span>
+                            </div>
+
+                            {/* W section */}
+                            <div className="glass-card flex-column" style={{ padding: '32px 40px', fontSize: '1.8rem', lineHeight: '1.6' }}>
+                                <h2 style={{ color: 'var(--success)', marginBottom: '24px', fontSize: '2.5rem', borderBottom: '2px solid rgba(255,255,255,0.1)', paddingBottom: '12px' }}>Phần W (Em muốn biết gì?)</h2>
+                                <div className="flex-column gap-md">
+                                    <div>
+                                        <strong className="text-gradient">Chọn 1–2 câu hỏi em muốn hiểu rõ nhất:</strong>
+                                        <ul style={{ listStyleType: 'none', paddingLeft: '24px', margin: '12px 0 0 0', fontSize: '1.6rem' }}>
+                                            <li style={{ marginBottom: '8px' }}>☐ Vì sao trân trọng sự khác biệt khiến chúng ta mạnh hơn?</li>
+                                            <li style={{ marginBottom: '8px' }}>☐ “1+1=3 hoặc nhiều hơn” nghĩa là gì trong làm việc nhóm?</li>
+                                            <li style={{ marginBottom: '8px' }}>☐ Vì sao doanh nghiệp muốn khuyến khích sự đa dạng?</li>
+                                        </ul>
+                                    </div>
+                                    <hr style={{ borderColor: 'var(--surface-border)', margin: '12px 0', opacity: 0.5 }} />
+                                    <div>
+                                        <strong className="text-gradient">(1 câu): Hôm nay em muốn rèn thêm kỹ năng nào để làm việc nhóm tốt hơn?</strong>
+                                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', margin: '12px 0 0 24px', fontSize: '1.6rem' }}>
+                                            <span>☐ lắng nghe</span>
+                                            <span>☐ đặt câu hỏi</span>
+                                            <span>☐ tôn trọng</span>
+                                            <span>☐ kết nối ý tưởng</span>
+                                            <span style={{ gridColumn: 'span 2' }}>☐ thuyết trình</span>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

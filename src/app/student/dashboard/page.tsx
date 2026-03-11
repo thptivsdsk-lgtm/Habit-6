@@ -107,10 +107,10 @@ function DashboardContent() {
             <main>
                 {phase === 1 && (
                     <Card className="text-center">
-                        <h3 style={{ color: 'var(--primary)', marginBottom: '16px' }}>K – Em đã biết/đã trải nghiệm gì?</h3>
+                        <h3 style={{ color: 'var(--primary)', marginBottom: '16px' }}>K + W – Kiến thức & Mong muốn</h3>
                         <p style={{ color: 'var(--text-secondary)', marginTop: '12px', lineHeight: '1.6', fontSize: '1.1rem' }}>
-                            Vui lòng xem hướng dẫn chi tiết trên <strong style={{ color: 'white' }}>Màn chiếu TV</strong> và hoàn thành phần K trên phiếu giấy của em.<br /><br />
-                            <span style={{ color: 'var(--warning)' }}>👉 Lưu ý: Trả lời thật ngắn gọn vào các câu K1, K2, K3 trong vòng 2 phút.</span>
+                            Vui lòng xem hướng dẫn chi tiết trên <strong style={{ color: 'white' }}>Màn chiếu TV</strong> và hoàn thành phần K và phần W trên phiếu giấy của em.<br /><br />
+                            <span style={{ color: 'var(--warning)' }}>👉 Lưu ý: Trả lời thật ngắn gọn cả 2 phần trong vòng 2 phút.</span>
                         </p>
                     </Card>
                 )}
