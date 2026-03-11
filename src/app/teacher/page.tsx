@@ -8,6 +8,7 @@ import { Button } from '../../components/ui/Button';
 import { Play, Square, ExternalLink, ShieldCheck, Plus, LogIn } from 'lucide-react';
 
 const PHASES = [
+    { id: 0, name: '📡 Lobby (chờ HS vào)', targetDuration: 0 },
     { id: 1, name: 'KWL giấy: K + W', targetDuration: 2 * 60 },
     { id: 2, name: 'Khởi động SEE: Poll', targetDuration: 5 * 60 },
     { id: 3, name: 'Làm nhóm DO (Tạo Ý 3)', targetDuration: 14 * 60 },
@@ -71,7 +72,7 @@ export default function TeacherDashboard() {
 
     const handleCreateSession = async () => {
         const code = Math.floor(10000 + Math.random() * 90000).toString();
-        const { error } = await (supabase as any).from('class_state').insert([{ session_code: code }]);
+        const { error } = await (supabase as any).from('class_state').insert([{ session_code: code, phase: 0 }]);
         if (error) {
             alert('Lỗi tạo phòng: ' + error.message);
         } else {
@@ -140,7 +141,7 @@ export default function TeacherDashboard() {
 
     if (loading) return <div className="flex-center" style={{ minHeight: '100vh' }}>Đang tải...</div>;
 
-    const currentPhase = classState?.phase || 1;
+    const currentPhase = classState?.phase ?? 0;
 
     const handleSetPhase = async (phaseId: number) => {
         await (supabase as any).from('class_state').update({ phase: phaseId, timer_ends_at: null }).eq('session_code', sessionCode);

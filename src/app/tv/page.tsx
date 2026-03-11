@@ -9,6 +9,7 @@ import { supabase } from '../../lib/supabase';
 import { useSearchParams } from 'next/navigation';
 import { ShieldCheck, LogIn } from 'lucide-react';
 import { Button } from '../../components/ui/Button';
+import { QRCodeSVG } from 'qrcode.react';
 
 function TvDisplayContent() {
     const searchParams = useSearchParams();
@@ -23,6 +24,7 @@ function TvDisplayContent() {
     const { progress } = useHousesProgress(sessionCode);
     const [focusedHouse, setFocusedHouse] = React.useState<string | null>(null);
     const [pollResponses, setPollResponses] = React.useState<any[]>([]);
+    const [joinedStudents, setJoinedStudents] = React.useState<any[]>([]);
 
     React.useEffect(() => {
         const auth = localStorage.getItem('lim_tv_auth');
@@ -58,6 +60,28 @@ function TvDisplayContent() {
     React.useEffect(() => {
         setFocusedHouse(null);
     }, [classState?.phase]);
+
+    // Real-time student list for lobby
+    React.useEffect(() => {
+        if (!sessionCode) return;
+
+        const fetchStudents = async () => {
+            const { data } = await (supabase as any).from('student_session')
+                .select('name, house')
+                .eq('session_code', sessionCode)
+                .order('created_at', { ascending: true });
+            if (data) setJoinedStudents(data);
+        };
+        fetchStudents();
+
+        const channel = supabase.channel(`lobby_students_${sessionCode}`)
+            .on('postgres_changes', { event: '*', schema: 'public', table: 'student_session', filter: `session_code=eq.${sessionCode}` }, () => {
+                fetchStudents();
+            })
+            .subscribe();
+
+        return () => { supabase.removeChannel(channel); };
+    }, [sessionCode]);
 
     const handleLogin = (e: React.FormEvent) => {
         e.preventDefault();
@@ -128,11 +152,139 @@ function TvDisplayContent() {
         return <div className="flex-center" style={{ minHeight: '100vh', fontSize: '2rem' }}>Đang tải màn chiếu (Mã PIN: {sessionCode})...</div>;
     }
 
-    const phase = classState?.phase || 1;
+    const phase = classState?.phase ?? 0;
 
     // Placeholder component for TV content
     const renderPhaseContent = () => {
         switch (phase) {
+            case 0: {
+                // Lobby screen
+                const studentUrl = typeof window !== 'undefined'
+                    ? `${window.location.origin}/student?session=${sessionCode}`
+                    : '';
+                const houseColors: Record<string, string> = { N: 'var(--house-n)', E: 'var(--house-e)', W: 'var(--house-w)', S: 'var(--house-s)' };
+                const houseCounts = { N: 0, E: 0, W: 0, S: 0 };
+                joinedStudents.forEach(s => {
+                    if (houseCounts[s.house as keyof typeof houseCounts] !== undefined) {
+                        houseCounts[s.house as keyof typeof houseCounts]++;
+                    }
+                });
+
+                return (
+                    <div className="flex-column" style={{ width: '100%', maxWidth: '1600px', margin: '0 auto', gap: '32px' }}>
+                        {/* Title */}
+                        <div className="text-center">
+                            <h1 style={{ fontSize: '3rem', color: 'var(--primary)', marginBottom: '8px' }}>🌟 BÀI 30: CÙNG NHAU SẼ TỐT HƠN 🌟</h1>
+                            <p style={{ fontSize: '1.5rem', color: 'var(--text-secondary)' }}>Vui lòng quét mã QR hoặc nhập mã PIN để tham gia</p>
+                        </div>
+
+                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1.5fr', gap: '32px' }}>
+                            {/* Left: PIN + QR */}
+                            <div className="flex-column gap-lg" style={{ alignItems: 'center' }}>
+                                <div className="glass-card text-center" style={{ padding: '40px', width: '100%' }}>
+                                    <p style={{ fontSize: '1.5rem', color: 'var(--text-secondary)', marginBottom: '16px' }}>MÃ PIN THAM GIA</p>
+                                    <div style={{
+                                        fontSize: '6rem',
+                                        fontWeight: 900,
+                                        letterSpacing: '16px',
+                                        background: 'linear-gradient(135deg, var(--primary), var(--secondary))',
+                                        WebkitBackgroundClip: 'text',
+                                        WebkitTextFillColor: 'transparent',
+                                        lineHeight: 1.2
+                                    }}>
+                                        {sessionCode}
+                                    </div>
+                                </div>
+
+                                {studentUrl && (
+                                    <div className="glass-card text-center" style={{ padding: '32px', width: '100%' }}>
+                                        <p style={{ fontSize: '1.2rem', color: 'var(--text-secondary)', marginBottom: '16px' }}>QUÉT MÃ QR ĐỂ VÀO NHANH</p>
+                                        <div style={{ background: 'white', borderRadius: '16px', padding: '16px', display: 'inline-block' }}>
+                                            <QRCodeSVG
+                                                value={studentUrl}
+                                                size={200}
+                                                level="M"
+                                            />
+                                        </div>
+                                        <p style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', marginTop: '12px', wordBreak: 'break-all' }}>{studentUrl}</p>
+                                    </div>
+                                )}
+                            </div>
+
+                            {/* Right: Student list */}
+                            <div className="glass-card flex-column" style={{ padding: '32px' }}>
+                                <div className="flex-between" style={{ marginBottom: '24px' }}>
+                                    <h2 style={{ fontSize: '2rem', color: 'var(--success)' }}>👥 Học sinh đã vào phòng</h2>
+                                    <div style={{
+                                        fontSize: '2.5rem',
+                                        fontWeight: 'bold',
+                                        background: 'linear-gradient(135deg, var(--success), var(--primary))',
+                                        WebkitBackgroundClip: 'text',
+                                        WebkitTextFillColor: 'transparent'
+                                    }}>
+                                        {joinedStudents.length}
+                                    </div>
+                                </div>
+
+                                {/* House summary */}
+                                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr 1fr', gap: '12px', marginBottom: '24px' }}>
+                                    {(['N', 'E', 'W', 'S'] as const).map(h => (
+                                        <div key={h} style={{
+                                            padding: '12px',
+                                            borderRadius: '12px',
+                                            background: `${houseColors[h]}22`,
+                                            border: `2px solid ${houseColors[h]}44`,
+                                            textAlign: 'center'
+                                        }}>
+                                            <div style={{ fontSize: '1.8rem', fontWeight: 'bold', color: houseColors[h] }}>{houseCounts[h]}</div>
+                                            <div style={{ fontSize: '1rem', color: 'var(--text-secondary)' }}>Nhà {h}</div>
+                                        </div>
+                                    ))}
+                                </div>
+
+                                {/* Student names */}
+                                <div style={{
+                                    flex: 1,
+                                    overflowY: 'auto',
+                                    maxHeight: '340px',
+                                    display: 'grid',
+                                    gridTemplateColumns: '1fr 1fr',
+                                    gap: '8px',
+                                    alignContent: 'start'
+                                }}>
+                                    {joinedStudents.length === 0 ? (
+                                        <p style={{ gridColumn: 'span 2', textAlign: 'center', color: 'var(--text-secondary)', fontSize: '1.3rem', padding: '40px 0' }}>
+                                            ⏳ Đang chờ học sinh tham gia...
+                                        </p>
+                                    ) : (
+                                        joinedStudents.map((s, i) => (
+                                            <div key={i} className="animate-fade-in" style={{
+                                                padding: '10px 16px',
+                                                borderRadius: '8px',
+                                                background: `${houseColors[s.house] || 'var(--surface-border)'}22`,
+                                                borderLeft: `4px solid ${houseColors[s.house] || 'var(--surface-border)'}`,
+                                                display: 'flex',
+                                                justifyContent: 'space-between',
+                                                alignItems: 'center',
+                                                fontSize: '1.2rem'
+                                            }}>
+                                                <span style={{ fontWeight: 500 }}>{s.name}</span>
+                                                <span style={{
+                                                    fontSize: '0.85rem',
+                                                    color: houseColors[s.house] || 'var(--text-secondary)',
+                                                    fontWeight: 'bold'
+                                                }}>
+                                                    {s.house}
+                                                </span>
+                                            </div>
+                                        ))
+                                    )}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                );
+            }
             case 1:
                 return (
                     <div className="flex-column gap-xl text-center" style={{ width: '100%', maxWidth: '1600px', margin: '0 auto' }}>

@@ -1,24 +1,33 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Suspense } from 'react';
+import { useSearchParams } from 'next/navigation';
 import { supabase } from '../../lib/supabase';
 import { Card } from '../../components/ui/Card';
 import { Button } from '../../components/ui/Button';
 
-export default function StudentLogin() {
+function StudentLoginContent() {
+    const searchParams = useSearchParams();
+    const urlSession = searchParams.get('session');
+
     const [name, setName] = useState('');
     const [house, setHouse] = useState<'N' | 'E' | 'W' | 'S' | ''>('');
     const [sessionCode, setSessionCode] = useState('');
     const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
+        // URL session param takes priority
+        if (urlSession) {
+            setSessionCode(urlSession);
+            return;
+        }
         const savedName = localStorage.getItem('lim_name');
         const savedHouse = localStorage.getItem('lim_house');
         const savedSession = localStorage.getItem('lim_session');
         if (savedName) setName(savedName);
         if (savedHouse) setHouse(savedHouse as any);
         if (savedSession) setSessionCode(savedSession);
-    }, []);
+    }, [urlSession]);
 
     const handleJoin = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -133,5 +142,13 @@ export default function StudentLogin() {
                 </form>
             </Card>
         </div>
+    );
+}
+
+export default function StudentLogin() {
+    return (
+        <Suspense fallback={<div className="flex-center" style={{ minHeight: '100vh' }}>Đang tải...</div>}>
+            <StudentLoginContent />
+        </Suspense>
     );
 }
