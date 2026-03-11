@@ -277,8 +277,6 @@ function TvDisplayContent() {
                         </div>
                     </div>
                 );
-            case 4:
-
             case 5:
                 return (
                     <div className="flex-center flex-column gap-xl text-center" style={{ minHeight: '600px' }}>
@@ -304,7 +302,7 @@ function TvDisplayContent() {
                         </div>
                     </div>
                 );
-            case 7:
+            case 4:
                 return (
                     <div className="flex-column gap-xl text-center" style={{ width: '100%', maxWidth: '1400px', margin: '0 auto', position: 'relative' }}>
                         <h1 style={{ fontSize: '4rem', color: 'var(--secondary)' }}>Thuyết trình GET</h1>
