@@ -174,6 +174,11 @@ function TvDisplayContent() {
                 );
             case 2:
                 // 2'–7' Khởi động SEE: Poll
+                const countA = pollResponses.filter(r => r.choice === 'A').length;
+                const countB = pollResponses.filter(r => r.choice === 'B').length;
+                const countC = pollResponses.filter(r => r.choice === 'C').length;
+                const countD = pollResponses.filter(r => r.choice === 'D').length;
+
                 return (
                     <div className="flex-column gap-md text-center" style={{ maxWidth: '1400px', margin: '0 auto' }}>
                         <h1 style={{ fontSize: '3rem', color: 'var(--secondary)' }}>Khởi động SEE: Poll Cảm Nhận</h1>
@@ -181,10 +186,22 @@ function TvDisplayContent() {
                         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '24px', marginTop: '24px', width: '100%' }}>
                             <Card className="text-left" style={{ padding: '32px' }}>
                                 <h3 style={{ color: 'var(--warning)', marginBottom: '16px' }}>Bước 1: Chọn nhanh (15s)</h3>
-                                <p style={{ fontSize: '1.5rem', margin: '4px 0' }}>A. Em vẫn thích như cũ</p>
-                                <p style={{ fontSize: '1.5rem', margin: '4px 0' }}>B. Em sẽ chán dần</p>
-                                <p style={{ fontSize: '1.5rem', margin: '4px 0' }}>C. Em có thể chán nhưng vẫn ăn vì tiện</p>
-                                <p style={{ fontSize: '1.5rem', margin: '4px 0' }}>D. Em không chắc</p>
+                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', margin: '8px 0', padding: '8px', background: 'rgba(255,255,255,0.05)', borderRadius: '8px' }}>
+                                    <span style={{ fontSize: '1.5rem' }}>A. Em vẫn thích như cũ</span>
+                                    <strong style={{ fontSize: '1.8rem', color: countA > 0 ? 'var(--primary)' : 'inherit' }}>{countA}</strong>
+                                </div>
+                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', margin: '8px 0', padding: '8px', background: 'rgba(255,255,255,0.05)', borderRadius: '8px' }}>
+                                    <span style={{ fontSize: '1.5rem' }}>B. Em sẽ chán dần</span>
+                                    <strong style={{ fontSize: '1.8rem', color: countB > 0 ? 'var(--primary)' : 'inherit' }}>{countB}</strong>
+                                </div>
+                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', margin: '8px 0', padding: '8px', background: 'rgba(255,255,255,0.05)', borderRadius: '8px' }}>
+                                    <span style={{ fontSize: '1.5rem' }}>C. Em có thể chán nhưng vẫn ăn vì tiện</span>
+                                    <strong style={{ fontSize: '1.8rem', color: countC > 0 ? 'var(--primary)' : 'inherit' }}>{countC}</strong>
+                                </div>
+                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', margin: '8px 0', padding: '8px', background: 'rgba(255,255,255,0.05)', borderRadius: '8px' }}>
+                                    <span style={{ fontSize: '1.5rem' }}>D. Em không chắc</span>
+                                    <strong style={{ fontSize: '1.8rem', color: countD > 0 ? 'var(--primary)' : 'inherit' }}>{countD}</strong>
+                                </div>
                             </Card>
                             <Card className="text-left" style={{ padding: '32px', display: 'flex', flexDirection: 'column' }}>
                                 <h3 style={{ color: 'var(--primary)', marginBottom: '16px' }}>Bước 2: Giải thích (20-30s)</h3>
