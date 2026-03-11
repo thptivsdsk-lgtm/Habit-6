@@ -175,7 +175,7 @@ function TvDisplayContent() {
                                 <h2 style={{ color: 'var(--success)', marginBottom: '24px', fontSize: '2.5rem', borderBottom: '2px solid rgba(255,255,255,0.1)', paddingBottom: '12px' }}>Phần W (Em muốn biết gì?)</h2>
                                 <div className="flex-column gap-md">
                                     <div>
-                                        <strong className="text-gradient">Chọn 1–2 câu hỏi em muốn hiểu rõ nhất:</strong>
+                                        <strong className="text-gradient">Chọn các câu hỏi em muốn hiểu rõ nhất:</strong>
                                         <ul style={{ listStyleType: 'none', paddingLeft: '24px', margin: '12px 0 0 0', fontSize: '1.6rem' }}>
                                             <li style={{ marginBottom: '8px' }}>☐ Vì sao trân trọng sự khác biệt khiến chúng ta mạnh hơn?</li>
                                             <li style={{ marginBottom: '8px' }}>☐ “1+1=3 hoặc nhiều hơn” nghĩa là gì trong làm việc nhóm?</li>
@@ -184,7 +184,7 @@ function TvDisplayContent() {
                                     </div>
                                     <hr style={{ borderColor: 'var(--surface-border)', margin: '12px 0', opacity: 0.5 }} />
                                     <div>
-                                        <strong className="text-gradient">(1 câu): Hôm nay em muốn rèn thêm kỹ năng nào để làm việc nhóm tốt hơn?</strong>
+                                        <strong className="text-gradient">Hôm nay em muốn rèn thêm kỹ năng nào để làm việc nhóm tốt hơn?</strong>
                                         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', margin: '12px 0 0 24px', fontSize: '1.6rem' }}>
                                             <span>☐ lắng nghe</span>
                                             <span>☐ đặt câu hỏi</span>
